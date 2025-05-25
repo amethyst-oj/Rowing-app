@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- this is for the elements in the recycle view in records activity -->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecordsActivity">
+
+    <ImageButton
+        android:id="@+id/row_button"
+        android:layout_width="360dp"
+        android:layout_height="100dp"
+        android:gravity="center_horizontal|top"
+        android:text="rowtemp" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="360dp"
+        android:layout_height="90dp"
+        android:gravity="bottom|left"
+        android:paddingStart="10dp"
+        android:text="timetemp"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="360dp"
+        android:layout_height="90dp"
+        android:gravity="center|top"
+        android:paddingVertical="10dp"
+        android:text="datetemp"
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/dist"
+        android:layout_width="360dp"
+        android:layout_height="90dp"
+        android:gravity="bottom|right"
+        android:paddingEnd="10dp"
+        android:text="disttemp"
+        android:textColor="#000000" />
+
+</FrameLayout>
