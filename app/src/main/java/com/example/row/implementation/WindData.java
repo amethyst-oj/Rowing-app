@@ -1,10 +1,17 @@
 package com.example.row.implementation;
 
 
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.HttpRequest;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.http.HttpClient;  //TODO seems like android doesnt have java libraries after java 8
-import java.net.http.HttpRequest;  //TODO i think android has its own web library
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,18 +35,32 @@ public class WindData implements Wind{
             //Getting data from API
             String apiKey = "9ae03fe30b1582eb943b576d73e32620";
             String url = "https://api.openweathermap.org/data/2.5/weather?lat=52.2&lon=0.117&appid=" + apiKey + "&units=metric";
-
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(url)).build();
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            String body = response.body();
-
+            URL url_wind= new URL(url);
+            HttpURLConnection urlConnection= (HttpURLConnection) url_wind.openConnection();
+            try{
+                BufferedReader input= new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                urlConnection.setRequestMethod("POST");
+                urlConnection.setRequestProperty("Content-Type", "application/json");
+                urlConnection.setDoOutput(true);
+                int responseCode= urlConnection.getResponseCode();
+                StringBuilder inLine= new StringBuilder();
+                String body = "";
+                if (responseCode==HttpURLConnection.HTTP_OK){
+                    String in;
+                    while((in=input.readLine()) != null){
+                        inLine.append(in);
+                    }
+                    body = String.valueOf(inLine);
+                }
+                double windSpeed = extractDouble(body, "\"speed\":");
+                double windDirection = extractDouble(body, "\"deg\":");
+                return new WindDataPoint(windSpeed, windDirection);
+            } finally {
+                urlConnection.disconnect();
+            }
             // Extract values
-            double windSpeed = extractDouble(body, "\"speed\":");
-            double windDirection = extractDouble(body, "\"deg\":");
-            return new WindDataPoint(windSpeed, windDirection);
-        } catch (IOException| InterruptedException e) {
+
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
