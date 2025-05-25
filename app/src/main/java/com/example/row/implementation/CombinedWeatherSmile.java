@@ -33,7 +33,7 @@ public class CombinedWeatherSmile implements Weather{
     }
 
     @Override
-    public Map<LocalTime, Double> getExternalTempData() {
+    public Map<LocalTime, Double> getExternalTemperatureData() {
         return CurrentApi.getExternalTempData();
     }
 

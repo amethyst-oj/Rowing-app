@@ -4,7 +4,7 @@ import java.time.LocalTime;
 import java.util.Map;
 
 public interface Weather {
-    Map<LocalTime, Double> getExternalTempData();
+    Map<LocalTime, Double> getExternalTemperatureData();
     Map<LocalTime, Double> getUVData();
     double getWaterTemperatureData();
     double getWaterPerformanceImpact();

@@ -5,9 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#645555"
+    android:background="#FF000022"
     tools:context=".MainActivity">
-    String
+
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
@@ -203,7 +203,7 @@
         android:layout_marginEnd="25dp"
         android:background="#645555"
         android:onClick="mapTransition"
-        android:rotation="-35"
+        android:rotation="0"
         app:layout_constraintEnd_toStartOf="@+id/temperature"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/compass_foreground"
@@ -268,9 +268,10 @@
         android:background="@drawable/baseline_rectangle_24"
         android:backgroundTint="#000000"
         android:text="TODAY"
+        android:fontFamily="sans-serif-smallcaps"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

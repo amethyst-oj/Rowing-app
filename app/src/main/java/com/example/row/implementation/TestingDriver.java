@@ -11,7 +11,7 @@ public class TestingDriver {
         double lat = 52.2098389;
         double lon = 0.1164972;
         Weather current = new CombinedWeatherSmile(api, where, lat, lon);
-        Map<LocalTime, Double> Temp = current.getExternalTempData();
+        Map<LocalTime, Double> Temp = current.getExternalTemperatureData();
         Map<LocalTime, Double> UV = current.getUVData();
         Map<LocalTime, String> Conditions = current.getGeneralWeatherState();
         double waterTemp = current.getWaterTemperatureData();
