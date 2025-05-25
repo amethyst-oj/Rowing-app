@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         TextView windText = findViewById(R.id.windText);
 
         CombinedWeatherSmile weather = new CombinedWeatherSmile();      //using Dhruv's weather class
-        long curTemperature = Math.round(weather.getExternalTempData().get(currentTime));
+        long curTemperature = Math.round(weather.getExternalTemperatureData().get(currentTime));
         String thermoColor;
         if (curTemperature > 25) {
             thermoColor = "red";

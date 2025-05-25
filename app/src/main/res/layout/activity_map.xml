@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#645555"
+    android:background="@drawable/background_gradient"
     tools:context=".MapActivity">
 
     <ImageButton
@@ -41,10 +41,11 @@
         android:layout_width="142dp"
         android:layout_height="36dp"
         android:layout_marginStart="252dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:layout_marginTop="44dp"
         android:text="0 ° N"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/compass" />
@@ -68,9 +69,9 @@
         android:text="WIND MAP"
         android:textAlignment="center"
         android:textAllCaps="true"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textIsSelectable="false"
-        android:textSize="34sp"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +84,7 @@
         android:layout_marginTop="96dp"
         android:text="0 km/h"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/compass" />
@@ -94,6 +95,7 @@
         android:layout_height="166dp"
         android:layout_marginStart="56dp"
         android:layout_marginTop="12dp"
+        android:fontFamily="sans-serif-smallcaps"
         android:rotation="-35"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/compass"

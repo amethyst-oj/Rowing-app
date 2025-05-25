@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 
 public class Records {
-    private List<SingleRecord> records = new ArrayList<SingleRecord>(); // Newest first;
+    private List<SingleRecord> records = new ArrayList<>(); // Newest first;
     int count = 0;
     public static class RecordOverlapException extends Exception {
         public RecordOverlapException(LocalDateTime dateTime) {
