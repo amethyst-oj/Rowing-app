@@ -24,7 +24,7 @@ public class Flags {
             Document doc= Jsoup.connect(flag_url).get();
             Element content= doc.getElementById("status");
             flag = Objects.requireNonNull(content.getElementsByTag("p").first()).text();
-            Pattern pattern= Pattern.compile("The flag is  (Green|Red/Yellow|Red|Yellow)");
+            Pattern pattern= Pattern.compile("The flag is (Green|Red/Yellow|Red|Yellow)");
             Matcher matcher= pattern.matcher(flag);
             if(matcher.matches()){
 
