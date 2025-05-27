@@ -2,6 +2,8 @@ package com.example.row;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +20,8 @@ import com.example.row.implementation.IconMap;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class RecordDetailsActivity extends AppCompatActivity {
 
@@ -54,31 +58,35 @@ public class RecordDetailsActivity extends AppCompatActivity {
         startActivity(main_Intent);
     }
     public void initialize(LocalDateTime currentTime) {
-        CombinedWeatherSmile weather = new CombinedWeatherSmile();
-        ImageView weatherNow = findViewById(R.id.weather0);         //finding views for widgets
-        ImageView weather1hr = findViewById(R.id.weather1);
-        ImageView weather2hr = findViewById(R.id.weather2);
-        ImageView weather3hr = findViewById(R.id.weather3);
-        ImageView weather4hr = findViewById(R.id.weather4);
-        TextView sunriseTime = findViewById(R.id.sunriseTime);
-        TextView sunsetTime = findViewById(R.id.sunsetTime);
-        TextView rainChance = findViewById(R.id.rainChance);
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            CombinedWeatherSmile weather = new CombinedWeatherSmile();
+            ImageView weatherNow = findViewById(R.id.weather0);         //finding views for widgets
+            ImageView weather1hr = findViewById(R.id.weather1);
+            ImageView weather2hr = findViewById(R.id.weather2);
+            ImageView weather3hr = findViewById(R.id.weather3);
+            ImageView weather4hr = findViewById(R.id.weather4);
+            TextView sunriseTime = findViewById(R.id.sunriseTime);
+            TextView sunsetTime = findViewById(R.id.sunsetTime);
+            TextView rainChance = findViewById(R.id.rainChance);
+            new Handler(Looper.getMainLooper()).post(() -> {
+                Map<LocalTime, String> weatherState = weather.getGeneralWeatherState();
+                int[] weathers = new int[5];  //get weather states for next 4 hours
+                for (int i = 0; i < 5; i++) {
+                    String icon = weatherState.get(currentTime.plusHours(i));
+                    int resID = IconMap.getIconMap().get(icon);
+                    weathers[i] = resID;
+                }
+                weatherNow.setImageResource(weathers[0]);  //set weather icons
+                weather1hr.setImageResource(weathers[1]);
+                weather2hr.setImageResource(weathers[2]);
+                weather3hr.setImageResource(weathers[3]);
+                weather4hr.setImageResource(weathers[4]);
 
-        Map<LocalTime, String> weatherState = weather.getGeneralWeatherState();
-        int[] weathers = new int[5];  //get weather states for next 4 hours
-        for (int i=0; i<5;i++) {
-            String icon = weatherState.get(currentTime.plusHours(i));
-            int resID = IconMap.getIconMap().get(icon);
-            weathers[i] = resID;
-        }
-        weatherNow.setImageResource(weathers[0]);  //set weather icons
-        weather1hr.setImageResource(weathers[1]);
-        weather2hr.setImageResource(weathers[2]);
-        weather3hr.setImageResource(weathers[3]);
-        weather4hr.setImageResource(weathers[4]);
-
-        sunriseTime.setText(weather.getSunrise());  //set widget data
-        sunsetTime.setText(weather.getSunset());
-        rainChance.setText(weather.getChanceOfRain());
+                sunriseTime.setText(weather.getSunrise());  //set widget data
+                sunsetTime.setText(weather.getSunset());
+                rainChance.setText(weather.getChanceOfRain());
+            });
+        });
     }
 }

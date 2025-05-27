@@ -2,6 +2,7 @@ package com.example.row;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SeekBar;
@@ -37,7 +38,9 @@ public class RecordGraphActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (!extras.isEmpty()) {
-            records = extras.getParcelable("records", Records.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                records = extras.getParcelable("records", Records.class);
+            }
             graph(linechart, records);
         }
 

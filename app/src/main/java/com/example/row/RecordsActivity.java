@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,8 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RecordsActivity extends AppCompatActivity {
     Records records;
@@ -42,6 +45,7 @@ public class RecordsActivity extends AppCompatActivity {
         try {
             records.newRecord(LocalDateTime.now(), 0, 0);
         } catch (Records.RecordOverlapException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
         recAdapter = new RecordsAdapter(records);
@@ -65,12 +69,26 @@ public class RecordsActivity extends AppCompatActivity {
         EditText timeTakenInput = findViewById(R.id.time_input);
         EditText distInput = findViewById(R.id.dist_input);
         View recyclerView = findViewById(R.id.mlist);
-        int distVal = Integer.parseInt(distInput.getText().toString().trim());
-        int timeVal = Integer.parseInt(timeTakenInput.getText().toString().trim());
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate intermediateDate = LocalDate.parse(dateInput.getText().toString().trim(), formatter);
-        LocalDateTime date = intermediateDate.atStartOfDay();;
-        records.newRecord(date,distVal,timeVal);
+        try {
+            int distVal = Integer.parseInt(distInput.getText().toString().trim());
+            int timeVal = Integer.parseInt(timeTakenInput.getText().toString().trim());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate intermediateDate = LocalDate.parse(dateInput.getText().toString().trim(), formatter);
+            Pattern pattern = Pattern.compile(("^(((0[1-9]|1\\d|2[0-8])/(0[1-9]|1[0-2]))|((29|30)/(0[13-9]|1[0-2]))|(31/(0[13578]|1[02])))/([1-9]\\d{3})$|^(29/02/((([1-9]\\d)((0[48]|[2468][048]|[13579][26]))|((([2468][048]|[13579][26])00))))$)"));
+            Matcher matcher = pattern.matcher(intermediateDate.toString());
+            if(matcher.find()) {
+                LocalDateTime date = intermediateDate.atStartOfDay();;
+                records.newRecord(date,distVal,timeVal);
+            } else {
+                throw new NumberFormatException();
+            }
+            LocalDateTime date = intermediateDate.atStartOfDay();;
+            records.newRecord(date,distVal,timeVal);
+        }catch (NumberFormatException nfe){
+            Toast.makeText(this, "Invalid data input", Toast.LENGTH_SHORT).show();
+        }
+
+
         submitButton.setVisibility(View.GONE);
         dateInput.setVisibility(View.GONE);
         timeTakenInput.setVisibility(View.GONE);

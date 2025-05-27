@@ -3,6 +3,8 @@ package com.example.row;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.*;
 
@@ -22,6 +24,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -35,14 +39,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        WindData wind = new WindData();
-        ImageView compass = findViewById(R.id.compass);
-        TextView windSpeed = findViewById(R.id.windSpeed);
-        TextView windDirection = findViewById(R.id.windDirection);
-        int angle = (int) Math.round(wind.getWindDirection());
-        windDirection.setText(angle);
-        compass.setRotation(-35+angle);
-        windSpeed.setText((int) Math.round(wind.getWindSpeed()));;
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            WindData wind = new WindData();
+            new Handler(Looper.getMainLooper()).post(() -> {
+                ImageView compass = findViewById(R.id.compass);
+                TextView windSpeed = findViewById(R.id.windSpeed);
+                TextView windDirection = findViewById(R.id.windDirection);
+                int angle = (int) Math.round(wind.getWindDirection());
+                windDirection.setText(String.valueOf(angle));
+                compass.setRotation(-35+angle);
+                windSpeed.setText((int) Math.round(wind.getWindSpeed()));;
+
+            });
+        });
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.compass);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
@@ -56,8 +66,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         for (int i = 0; i < coords.size() - 1; i++) {
             ArrayList<Double> cur = coords.get(i);
             ArrayList<Double> next = coords.get(i+1);
-            String color = "red";   //until lower line dealt with
-            //String color =  wind.getWindImpactMagnitudeColour(cur.get(0),cur.get(1),next.get(0),next.get(1))      //TODO Latitude, longitude double
+            String color =  wind.getWindImpactMagnitudeColour(cur.get(0),cur.get(1),next.get(0),next.get(1));      //TODO Latitude, longitude double
             PolylineOptions line = new PolylineOptions()
                     .add(new LatLng(cur.get(0), cur.get(1)))
                     .add(new LatLng(next.get(0), next.get(1)))

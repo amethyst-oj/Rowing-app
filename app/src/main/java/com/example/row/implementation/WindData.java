@@ -25,6 +25,9 @@ public class WindData implements Wind{
     private double windSpeed;
     private double windDirection;
 
+    public WindData(){
+        getWindData();
+    }
     //extractDouble takes a string and a key you are trying to locate, fins key and then returns value associated with key
     private static double extractDouble(String text, String key) {
         int start = text.indexOf(key) + key.length();

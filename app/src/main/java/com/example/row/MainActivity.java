@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             toPrevDay(prevDay);
         } catch (IOException e) {
+            e.printStackTrace();
            throw new RuntimeException(e);
         }
     }
@@ -80,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initializeData(LocalTime currentTime) throws IOException {
+        int[] weathers = new int[5];
         // Set hourly weather icons
         ImageView weatherNow = findViewById(R.id.weather0);
         ImageView weather1hr = findViewById(R.id.weather1);
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 flagColor = Flags.getFlagColour();
             } catch (IOException e) {
+                e.printStackTrace();
                 throw new RuntimeException(e);
             }
 
@@ -119,36 +122,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
             WindData wind = new WindData();
-            wind.getWindData();
             double windDirection = wind.getWindDirection();
             double windSpeed = wind.getWindSpeed();
 
             Map<LocalTime, String> weatherState = weather.getGeneralWeatherState();
             Map<LocalTime, Double> uvValues = weather.getUVData();
-
             String finalFlagColor = flagColor;
-
-            int[] weathers = new int[5];
-            for (int i = 0; i < 5; i++) {
-                String icon = weatherState.get(currentTime.plusHours(i));
-                int resID = IconMap.getIconMap().get(icon);
-                weathers[i] = resID;
-
-                weatherNow.setImageResource(weathers[0]);
-                weather1hr.setImageResource(weathers[1]);
-                weather2hr.setImageResource(weathers[2]);
-                weather3hr.setImageResource(weathers[3]);
-                weather4hr.setImageResource(weathers[4]);
-
-
-
-                sunriseTime.setText(weather.getSunrise());
-                sunsetTime.setText(weather.getSunset());
-                rainChance.setText(weather.getChanceOfRain());
-                uvValue.setText(String.valueOf((int) Math.round(uvValues.get(currentTime))));
-
-                uvGraph(lineChart, uvValues);
-            }
+            int uvVal= (int) Math.round(uvValues.get(key));
 
             new Handler(Looper.getMainLooper()).post(() -> {
                 // Now safely update the UI here
@@ -158,6 +138,23 @@ public class MainActivity extends AppCompatActivity {
                 TextView temperatureText = findViewById(R.id.temperatureText);
                 TextView windText = findViewById(R.id.windText);
 
+                uvValue.setText(String.valueOf(uvVal));
+                uvGraph(lineChart, uvValues);
+
+            for (int i = 0; i < 5; i++) {
+                String icon = weatherState.get(key.plusHours(i));
+                int resID = IconMap.getIconMap().get(icon);
+                weathers[i] = resID;
+                weatherNow.setImageResource(weathers[0]);
+                weather1hr.setImageResource(weathers[1]);
+                weather2hr.setImageResource(weathers[2]);
+                weather3hr.setImageResource(weathers[3]);
+                weather4hr.setImageResource(weathers[4]);
+
+
+                sunriseTime.setText(weather.getSunrise());
+                sunsetTime.setText(weather.getSunset());
+                rainChance.setText(weather.getChanceOfRain());
                 int realThermoColor = Color.parseColor(finalThermoColor);
                 int realFlagColor = Color.parseColor(finalFlagColor);
                 thermometer.setImageTintList(ColorStateList.valueOf(realThermoColor));
@@ -165,9 +162,9 @@ public class MainActivity extends AppCompatActivity {
                 compass.setRotation(Math.round(-35 + windDirection));
                 windText.setText((int) Math.round(windSpeed) + "KM/H");
                 temperatureText.setText((int) curTemperature + "°");
-                });
-
+                };
             });
+        });
     }
 
     public void uvGraph(LineChart lineChart, Map<LocalTime, Double> uvValues) {

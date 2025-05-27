@@ -3,7 +3,7 @@ package com.example.row.implementation;
 import java.util.List;
 
 public interface Wind {
-    WindDataPoint getWindData() throws Exception;
+    void getWindData() throws Exception;
     double getWindDirection(); // 0 - 359
     double getWindSpeed(); // > 0
 
