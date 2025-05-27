@@ -1,5 +1,10 @@
 package com.example.row.implementation;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +12,41 @@ import java.time.LocalDateTime;
 import java.time.LocalDate;
 
 
-public class Records {
+public class Records implements Parcelable {
+    ;
     private List<SingleRecord> records = new ArrayList<>(); // Newest first;
     int count = 0;
+
+    public static final Creator<Records> CREATOR = new Creator<Records>() {
+        @Override
+        public Records createFromParcel(Parcel in) {
+            return new Records(in);
+        }
+
+        @Override
+        public Records[] newArray(int size) {
+            return new Records[size];
+        }
+    };
+
+    public Records() {
+
+    }
+    protected Records(Parcel in) {
+        records = in.createTypedArrayList(SingleRecord.CREATOR);
+        count = records != null ? records.size() : 0;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeTypedList(records);
+    }
+
     public static class RecordOverlapException extends Exception {
         public RecordOverlapException(LocalDateTime dateTime) {
             super("Record overlaps at: " + dateTime);
@@ -52,7 +89,7 @@ public class Records {
         else { return outRecord; }
     }
 
-    List<SingleRecord> getRecordsByDistance(double distanceMeters){ // Newest first
+    public List<SingleRecord> getRecordsByDistance(int distanceMeters){ // Newest first
         List<SingleRecord> outList = new ArrayList<>();
         for (SingleRecord record : records) {
             if (record.getDistance() == distanceMeters){
@@ -62,11 +99,11 @@ public class Records {
         return outList;
     }
 
-    List<SingleRecord> getRecordsChronologically(){ // Newest first
+    public List<SingleRecord> getRecordsChronologically(){ // Newest first
         return records;
     }
 
-    List<SingleRecord> getRecordsByWind(double windSpeed, double windAngle, DayInfo dayInfo){ // Newest first. Returns all records with wind angle and speed within 10% of current days data
+    public List<SingleRecord> getRecordsByWind(double windSpeed, double windAngle, DayInfo dayInfo){ // Newest first. Returns all records with wind angle and speed within 10% of current days data
         List<SingleRecord> outList = new ArrayList<>();
         for (SingleRecord record : records) {
             LocalDate day = record.getDateTime().toLocalDate();
@@ -79,7 +116,7 @@ public class Records {
         return outList;
     }
 
-    List<SingleRecord> getRecordsByTemp(int temp, DayInfo dayInfo){
+    public List<SingleRecord> getRecordsByTemp(int temp, DayInfo dayInfo){
         List<SingleRecord> outList = new ArrayList<>();
         for (SingleRecord record : records) {
             LocalDate day = record.getDateTime().toLocalDate();

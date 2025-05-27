@@ -3,7 +3,9 @@ package com.example.row;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CalendarView;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,9 +17,12 @@ import androidx.recyclerview.widget.*;
 import com.example.row.implementation.Records;
 import com.example.row.implementation.RecordsAdapter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 public class RecordsActivity extends AppCompatActivity {
+    Records records;
+    private RecordsAdapter recAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +36,14 @@ public class RecordsActivity extends AppCompatActivity {
         });
         RecyclerView recyclerView = findViewById(R.id.mlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Records temp = new Records(); //TODO TEMPORARY
+        records = new Records();
         try {
-            temp.newRecord(LocalDateTime.now(), 50, 50);
+            records.newRecord(LocalDateTime.now(), 0, 0);
         } catch (Records.RecordOverlapException e) {
             throw new RuntimeException(e);
         }
-        RecyclerView.Adapter recAdapter = new RecordsAdapter(temp);
+        recAdapter = new RecordsAdapter(records);
         recyclerView.setAdapter(recAdapter);
-    }
-    public void toMain(View v) {
-        Intent main_Intent = new Intent(this, MainActivity.class);
-        startActivity(main_Intent);
     }
     public void addNewRecord(View v) {
         View submitButton = findViewById(R.id.submit);
@@ -56,25 +57,32 @@ public class RecordsActivity extends AppCompatActivity {
         timeTakenInput.setVisibility(View.VISIBLE);
         distInput.setVisibility(View.VISIBLE);
     }
-    public void submitRecord (View v) {
+    public void submitRecord (View v) throws Records.RecordOverlapException {
         View submitButton = findViewById(R.id.submit);
-        EditText dateInput = findViewById(R.id.date_input);
+        CalendarView dateInput = findViewById(R.id.date_input);
         EditText timeTakenInput = findViewById(R.id.time_input);
         EditText distInput = findViewById(R.id.dist_input);
         View recyclerView = findViewById(R.id.mlist);
-        String[] recordDetails = new String[] {
-                dateInput.getText().toString(), distInput.getText().toString(), timeTakenInput.getText().toString()};
-        //TODO add new record with inputs, clean inputs
+        int distVal = Integer.parseInt(distInput.getText().toString());
+        int timeVal = Integer.parseInt(timeTakenInput.getText().toString());
+        LocalDateTime date = LocalDateTime.from(Instant.ofEpochMilli(dateInput.getDate()));
+        records.newRecord(date,distVal,timeVal);
         submitButton.setVisibility(View.GONE);
         dateInput.setVisibility(View.GONE);
         timeTakenInput.setVisibility(View.GONE);
         distInput.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+        recAdapter.refresh();
+;    }
+
+    public void toMain(View v) {
+        Intent main_Intent = new Intent(this, MainActivity.class);
+        startActivity(main_Intent);
     }
 
     public void toGraph(View v) {
         Intent graphIntent = new Intent(this, RecordGraphActivity.class);
-        // graphIntent.putExtra(); // TODO put record info
+        graphIntent.putExtra("records",records);
         startActivity(graphIntent);
     }
 }

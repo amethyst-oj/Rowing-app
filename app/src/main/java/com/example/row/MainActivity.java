@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.row.implementation.CombinedWeatherSmile;
 import com.example.row.implementation.Flags;
+import com.example.row.implementation.IconMap;
 import com.example.row.implementation.WindData;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.*;
@@ -24,34 +25,6 @@ import java.time.LocalTime;
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity {
-
-    Map<String, Integer> iconMap = new HashMap<String, Integer>() {{  //map for weather icons
-        put("clear_night", R.drawable.clear_night);
-        put("cloudy", R.drawable.cloudy);
-        put("drizzle", R.drawable.drizzle);
-        put("heavy_rain", R.drawable.heavy_rain);
-        put("mostly_cloudy_day", R.drawable.mostly_cloudy_day);
-        put("blowing_snow", R.drawable.blowing_snow);
-        put("flurries", R.drawable.flurries);
-        put("haze_fog_dust_smoke", R.drawable.haze_fog_dust_smoke);
-        put("heavy_snow", R.drawable.heavy_snow);
-        put("isolated_scattered_tstorms_day", R.drawable.isolated_scattered_tstorms_day);
-        put("isolated_scattered_tstorms_night", R.drawable.isolated_scattered_tstorms_night);
-        put("mostly_clear_night", R.drawable.mostly_clear_night);
-        put("mostly_cloudy_night", R.drawable.mostly_cloudy_night);
-        put("mostly_sunny", R.drawable.mostly_sunny);
-        put("partly_cloudy", R.drawable.partly_cloudy);
-        put("partly_cloudy_night", R.drawable.partly_cloudy_night);
-        put("scattered_showers_day", R.drawable.scattered_showers_day);
-        put("scattered_showers_night", R.drawable.scattered_showers_night);
-        put("showers_rain", R.drawable.showers_rain);
-        put("sleet_hail", R.drawable.sleet_hail);
-        put("snow_showers_snow", R.drawable.snow_showers_snow);
-        put("strong_tstorms", R.drawable.strong_tstorms);
-        put("sunny", R.drawable.sunny);
-        put("tornado", R.drawable.tornado);
-        put("wintry_mix_rain_snow", R.drawable.wintry_mix_rain_snow);
-    }};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        try {
-            toPrevDay(prevDay);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        // try {
+            //toPrevDay(prevDay);
+        //} catch (IOException e) {
+          //  throw new RuntimeException(e);
+        //}
     }
 
     public void recordsTransition(View v) {
@@ -117,8 +90,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             thermoColor = "yellow";
         }
-        Flags.getFlagColour();
-        String flagColor = Flags.getFlag();
+        String flagColor = Flags.getFlagColour();
         if (Objects.equals(flagColor, "Red/Yellow")) {
             flagColor = "orange";
         }
@@ -143,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
         TextView sunsetTime = findViewById(R.id.sunsetTime);
         TextView rainChance = findViewById(R.id.rainChance);
         TextView uvValue = findViewById(R.id.currentUVValue);
-        TextView flagText= findViewById(R.id.currentFlagValue);
-        flagText.setText(flagColor.toUpperCase());
         LineChart lineChart = findViewById(R.id.lineChart);
 
         Map<LocalTime, String> weatherState = weather.getGeneralWeatherState();
@@ -153,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         int[] weathers = new int[5];  //get weather states for next 4 hours
         for (int i=0; i<5;i++) {
             String icon = weatherState.get(currentTime.plusHours(i));
-            int resID = iconMap.get(icon);
+            int resID = IconMap.getIconMap().get(icon);
             weathers[i] = resID;
         }
         weatherNow.setImageResource(weathers[0]);  //set weather icons

@@ -78,17 +78,16 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone" />
 
-    <EditText
+    <CalendarView
         android:id="@+id/date_input"
         android:layout_width="121dp"
         android:layout_height="65dp"
         android:layout_marginStart="66dp"
         android:layout_marginTop="148dp"
-        android:text="Enter Date"
         android:textAlignment="center"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/time_input"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/dist_input"
