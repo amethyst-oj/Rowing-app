@@ -333,7 +333,6 @@
         android:layout_height="50dp"
         android:layout_marginStart="14dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:text=
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
