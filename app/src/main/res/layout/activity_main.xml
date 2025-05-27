@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_gradient"
+    android:background="#FF000022"
     tools:context=".MainActivity">
 
 
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="36dp"
-        android:background="@android:color/white"
+        android:background="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/temperatureText" />
 
@@ -36,8 +36,7 @@
         android:layout_marginTop="24dp"
         android:text="05:00"
         android:textAlignment="center"
-        android:fontFamily="sans-serif-smallcaps"
-        android:textColor="#ffffff"
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/sunriseIcon"
         app:layout_constraintTop_toBottomOf="@+id/view2" />
@@ -57,7 +56,7 @@
         android:layout_width="350dp"
         android:layout_height="2dp"
         android:layout_marginTop="28dp"
-        android:background="@android:color/white"
+        android:background="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
@@ -122,8 +121,7 @@
         android:layout_marginTop="136dp"
         android:text="50%"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif-smallcaps"
+        android:textColor="#000000"
         android:textSize="34sp"
         app:layout_constraintStart_toEndOf="@+id/rainIcon"
         app:layout_constraintTop_toBottomOf="@+id/mainline" />
@@ -155,9 +153,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="28dp"
         android:text="22:00"
-        android:fontFamily="sans-serif-smallcaps"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/sunsetIcon"
         app:layout_constraintTop_toBottomOf="@+id/sunriseTime" />
@@ -167,7 +164,7 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_marginTop="240dp"
-        android:background="@android:color/white"
+        android:background="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mainline" />
 
@@ -175,10 +172,9 @@
         android:id="@+id/temperatureText"
         android:layout_width="107dp"
         android:layout_height="19dp"
-        android:fontFamily="sans-serif-smallcaps"
         android:text="15°"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -197,7 +193,7 @@
         app:layout_constraintStart_toEndOf="@+id/day"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/arrow_right_foreground"
-        app:tint="#FFFFFF" />
+        app:tint="#000000" />
 
     <ImageButton
         android:id="@+id/compass"
@@ -205,20 +201,20 @@
         android:layout_height="110dp"
         android:layout_marginTop="104dp"
         android:layout_marginEnd="25dp"
-        android:background="@color/slate"
+        android:background="#645555"
         android:onClick="mapTransition"
         android:rotation="0"
         app:layout_constraintEnd_toStartOf="@+id/temperature"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/compass_foreground"
-        app:tint="#FFFFFF" />
+        app:tint="#000000" />
 
     <ImageButton
         android:id="@+id/temperature"
         android:layout_width="107dp"
         android:layout_height="110dp"
         android:layout_marginTop="104dp"
-        android:background="@color/slate"
+        android:background="#645555"
         android:onClick="tempTransition"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -234,7 +230,7 @@
         android:layout_height="110dp"
         android:layout_marginStart="25dp"
         android:layout_marginTop="104dp"
-        android:background="@color/slate"
+        android:background="#645555"
         android:onClick="flagTransition"
         app:layout_constraintStart_toEndOf="@+id/temperature"
         app:layout_constraintTop_toTopOf="parent"
@@ -270,9 +266,9 @@
         android:layout_height="48dp"
         android:layout_marginTop="36dp"
         android:background="@drawable/baseline_rectangle_24"
-        android:backgroundTint="#FFFFFF"
-        android:fontFamily="sans-serif-smallcaps"
+        android:backgroundTint="#000000"
         android:text="TODAY"
+        android:fontFamily="sans-serif-smallcaps"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="#FFFFFF"
@@ -304,38 +300,24 @@
         android:adjustViewBounds="true"
         android:background="#00FFFFFF"
         android:cropToPadding="false"
-        android:onClick="toPrevDay"
         android:rotation="180"
         android:scaleType="fitXY"
         android:visibility="gone"
         app:layout_constraintEnd_toStartOf="@+id/day"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/arrow_right_foreground" />
+        app:srcCompat="@mipmap/arrow_right_foreground"
+        android:onClick="toPrevDay"/>
 
     <TextView
         android:id="@+id/windText"
         android:layout_width="107dp"
         android:layout_height="19dp"
         android:layout_marginEnd="25dp"
-        android:fontFamily="sans-serif-smallcaps"
         android:text="0° N"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         app:layout_constraintEnd_toStartOf="@+id/temperatureText"
         app:layout_constraintTop_toBottomOf="@+id/compass" />
-
-    <TextView
-        android:id="@+id/currentFlagValue"
-        android:layout_width="125dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="14dp"
-        android:fontFamily="sans-serif-smallcaps"
-        android:text="Green"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="15sp"
-        app:layout_constraintStart_toEndOf="@+id/temperatureText"
-        app:layout_constraintTop_toBottomOf="@+id/flag" />
 
     <TextView
         android:id="@+id/uvLabel"
@@ -343,10 +325,9 @@
         android:layout_height="53dp"
         android:layout_marginStart="36dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif-smallcaps"
         android:text="UV"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view3" />
@@ -357,10 +338,9 @@
         android:layout_height="109dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="12dp"
-        android:fontFamily="sans-serif-smallcaps"
         android:text="7.0"
         android:textAlignment="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#000000"
         android:textSize="75sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uvLabel" />
