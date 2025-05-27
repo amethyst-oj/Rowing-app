@@ -47,10 +47,10 @@
         android:cropToPadding="false"
         android:onClick="toGraph"
         android:scaleType="fitXY"
-        android:tint="#C0BABA"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user"
-        app:srcCompat="@mipmap/graph_foreground" />
+        app:srcCompat="@mipmap/graph_foreground"
+        app:tint="#C0BABA" />
 
     <ImageButton
         android:id="@+id/new_record"
@@ -78,12 +78,13 @@
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone" />
 
-    <CalendarView
-        android:id="@+id/date_input"
+    <EditText
+        android:id="@+id/calendar"
         android:layout_width="121dp"
         android:layout_height="65dp"
         android:layout_marginStart="66dp"
         android:layout_marginTop="148dp"
+        android:text="Date"
         android:textAlignment="center"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@+id/time_input"
@@ -111,6 +112,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dist_input"
+        android:onClick="submitRecord"
         android:visibility="gone" />
 
 

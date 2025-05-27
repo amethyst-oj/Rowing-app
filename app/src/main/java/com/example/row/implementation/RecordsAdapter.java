@@ -16,6 +16,7 @@ import com.example.row.RecordDetailsActivity;
 import com.example.row.RecordsActivity;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 //for implementing recycleview, records list
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
@@ -44,7 +45,8 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
                 Intent toDetails = new Intent(v.getContext(), RecordDetailsActivity.class);  // go to record details page
                 toDetails.putExtra("distance", distData);
                 toDetails.putExtra("date", dateData);
-                toDetails.putExtra("time", timeData);
+                String safeTime = LocalTime.parse(timeData).withNano(0).toString();
+                toDetails.putExtra("time", safeTime);
                 v.getContext().startActivity(toDetails);
             });
         }

@@ -26,11 +26,8 @@ public class Flags {
             flag = Objects.requireNonNull(content.getElementsByTag("p").first()).text();
             Pattern pattern= Pattern.compile("The flag is currently (Green|Red/Yellow|Red|Yellow)");
             Matcher matcher= pattern.matcher(flag);
-            if(matcher.matches()){
-                flag= matcher.group(1);
-            }
+            flag = flag.replaceAll("The flag is","");
             return flag;
-
         }
 
         public static String getFlag(){
