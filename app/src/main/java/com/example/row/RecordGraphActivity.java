@@ -85,7 +85,7 @@ public class RecordGraphActivity extends AppCompatActivity {
         for (SingleRecord rec: recordList) {  //converting recordList to entry list
             entries.add(new Entry(rec.getDateTime().atZone(ZoneId.systemDefault()).toEpochSecond(), rec.getTimeTaken()));
         }
-        LineDataSet data = new LineDataSet(entries, "UV by hour");
+        LineDataSet data = new LineDataSet(entries, "Date");
         data.setColor(Color.BLUE);
         LineData lineData = new LineData(data);
         lineChart.setData(lineData);

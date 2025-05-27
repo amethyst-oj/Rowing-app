@@ -18,7 +18,9 @@ import com.example.row.implementation.Records;
 import com.example.row.implementation.RecordsAdapter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class RecordsActivity extends AppCompatActivity {
     Records records;
@@ -47,7 +49,7 @@ public class RecordsActivity extends AppCompatActivity {
     }
     public void addNewRecord(View v) {
         View submitButton = findViewById(R.id.submit);
-        View dateInput = findViewById(R.id.date_input);
+        EditText dateInput = findViewById(R.id.calendar);
         View timeTakenInput = findViewById(R.id.time_input);
         View distInput = findViewById(R.id.dist_input);
         View recyclerView = findViewById(R.id.mlist);
@@ -59,13 +61,15 @@ public class RecordsActivity extends AppCompatActivity {
     }
     public void submitRecord (View v) throws Records.RecordOverlapException {
         View submitButton = findViewById(R.id.submit);
-        CalendarView dateInput = findViewById(R.id.date_input);
+        EditText dateInput = findViewById(R.id.calendar);
         EditText timeTakenInput = findViewById(R.id.time_input);
         EditText distInput = findViewById(R.id.dist_input);
         View recyclerView = findViewById(R.id.mlist);
-        int distVal = Integer.parseInt(distInput.getText().toString());
-        int timeVal = Integer.parseInt(timeTakenInput.getText().toString());
-        LocalDateTime date = LocalDateTime.from(Instant.ofEpochMilli(dateInput.getDate()));
+        int distVal = Integer.parseInt(distInput.getText().toString().trim());
+        int timeVal = Integer.parseInt(timeTakenInput.getText().toString().trim());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate intermediateDate = LocalDate.parse(dateInput.getText().toString().trim(), formatter);
+        LocalDateTime date = intermediateDate.atStartOfDay();;
         records.newRecord(date,distVal,timeVal);
         submitButton.setVisibility(View.GONE);
         dateInput.setVisibility(View.GONE);

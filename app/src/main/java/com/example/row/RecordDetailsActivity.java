@@ -37,7 +37,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
         //initialize(LocalDateTime.now());
         Bundle extras = getIntent().getExtras();
         if (extras!=null) {
-            String time = extras.getString("time");
+            String time = extras.getString("timeTaken");
             String date = extras.getString("date");
             String distance = extras.getString("distance");
             timeDisplay.setText(time+"s");
