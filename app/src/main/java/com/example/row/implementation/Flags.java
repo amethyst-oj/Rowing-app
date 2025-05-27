@@ -27,7 +27,6 @@ public class Flags {
         Pattern pattern= Pattern.compile("The flag is (Green|Red/Yellow|Red|Yellow)", Pattern.CASE_INSENSITIVE);
         Matcher matcher= pattern.matcher(flag);
         flag= flag.replaceAll("The flag is ", "");
-
     }
 
         public static String getFlag(){
