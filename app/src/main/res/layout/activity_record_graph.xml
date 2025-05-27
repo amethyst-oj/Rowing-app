@@ -5,20 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#645555"
+    android:background="@drawable/background_gradient"
     tools:context=".RecordGraphActivity">
-
-    <ImageButton
-        android:id="@+id/new_record2"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="108dp"
-        android:background="#645555"
-        android:onClick="addNewRecord"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_add" />
 
     <ImageButton
         android:id="@+id/home_button"
@@ -67,7 +55,7 @@
         android:layout_marginTop="36dp"
         android:text="RECORDS"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -102,7 +90,7 @@
         android:layout_height="wrap_content"
         android:text="500m"
         android:textAlignment="center"
-        android:textColor="#000000"
+        android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

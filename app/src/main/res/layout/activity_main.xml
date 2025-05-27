@@ -8,7 +8,6 @@
     android:background="@drawable/background_gradient"
     tools:context=".MainActivity">
 
-
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="203dp"
@@ -197,49 +196,50 @@
         app:layout_constraintStart_toEndOf="@+id/day"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/arrow_right_foreground"
-        app:tint="#FFFFFF" />
+        app:tint="#FFFFFF"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/compass"
         android:layout_width="107dp"
         android:layout_height="110dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginEnd="25dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="24dp"
         android:background="@color/slate"
         android:onClick="mapTransition"
         android:rotation="0"
         app:layout_constraintEnd_toStartOf="@+id/temperature"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/compass_foreground"
-        app:tint="#FFFFFF" />
+        app:tint="#FFFFFF"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/temperature"
         android:layout_width="107dp"
         android:layout_height="110dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="120dp"
         android:background="@color/slate"
-        android:onClick="tempTransition"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/thermo_foreground"
-        app:tint="@android:color/white" />
+        app:tint="@android:color/white"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/flag"
         android:layout_width="107dp"
         android:layout_height="110dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="120dp"
         android:background="@color/slate"
-        android:onClick="flagTransition"
         app:layout_constraintStart_toEndOf="@+id/temperature"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/green_foreground"
-        app:tint="@android:color/white" />
+        app:tint="@android:color/white"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/to_records"
@@ -251,18 +251,20 @@
         android:onClick="recordsTransition"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user"
-        app:srcCompat="@android:drawable/ic_menu_today" />
+        app:srcCompat="@android:drawable/ic_menu_today"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/user"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
         android:background="#00645555"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_my_calendar" />
+        app:srcCompat="@android:drawable/ic_menu_my_calendar"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <TextView
         android:id="@+id/day"
@@ -294,7 +296,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/home_foreground"
-        app:tint="#C0BABA" />
+        app:tint="#C0BABA"
+        tools:ignore="SpeakableTextPresentCheck" />
 
     <ImageButton
         android:id="@+id/previous_day"
@@ -352,13 +355,83 @@
         app:layout_constraintTop_toBottomOf="@+id/view3" />
 
     <TextView
+        android:id="@+id/w0text"
+        android:layout_width="30dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="15°"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.167"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weather0" />
+
+    <TextView
+        android:id="@+id/w1text"
+        android:layout_width="30dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="15°"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.335"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weather1" />
+
+    <TextView
+        android:id="@+id/w2text"
+        android:layout_width="30dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="15°"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weather2" />
+
+    <TextView
+        android:id="@+id/w3text"
+        android:layout_width="30dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="15°"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weather3" />
+
+    <TextView
+        android:id="@+id/w4text"
+        android:layout_width="30dp"
+        android:layout_height="19dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif-smallcaps"
+        android:text="15°"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.839"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weather4" />
+
+    <TextView
         android:id="@+id/currentUVValue"
         android:layout_width="125dp"
         android:layout_height="109dp"
         android:layout_marginStart="44dp"
         android:layout_marginTop="12dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:text="7.0"
+        android:text="@string/_7_0"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="75sp"
