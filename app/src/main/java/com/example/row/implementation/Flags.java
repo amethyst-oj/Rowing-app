@@ -20,13 +20,14 @@ public class Flags {
         private static Map<String,String> flag_meaning= new HashMap<>();
         private static String flag;
 
-    public static void getFlagColour() throws IOException {
+    public static String getFlagColour() throws IOException {
         Document doc= Jsoup.connect(flag_url).get();
         Element content= doc.getElementById("status");
         flag = Objects.requireNonNull(content.getElementsByTag("p").first()).text();
         Pattern pattern= Pattern.compile("The flag is (Green|Red/Yellow|Red|Yellow)", Pattern.CASE_INSENSITIVE);
         Matcher matcher= pattern.matcher(flag);
         flag= flag.replaceAll("The flag is ", "");
+        return flag;
     }
 
         public static String getFlag(){
