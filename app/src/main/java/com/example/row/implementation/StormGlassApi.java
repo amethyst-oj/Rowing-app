@@ -24,8 +24,7 @@ public abstract class StormGlassApi implements Weather {
         try {
             String startISO = dateTimeUTC.withMinute(0).withSecond(0).withNano(0)
                     .format(DateTimeFormatter.ISO_DATE_TIME);
-            String urlString = String.format(
-                    "https://api.stormglass.io/v2/weather/point?lat=%.4f&lng=%.4f&params=waterTemperature&start=%s&end=%s",
+            String urlString = String.format("https://api.stormglass.io/v2/weather/point?lat=%.4f&lng=%.4f&params=waterTemperature&start=%s&end=%s",
                     lat, lon, startISO, startISO);
 
             URL url = new URL(urlString);

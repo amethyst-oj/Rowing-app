@@ -20,11 +20,11 @@ public class Flags {
         private static Map<String,String> flag_meaning= new HashMap<>();
         private static String flag;
 
-        public static String getFlagColour() throws IOException { //TODO could you make this return the color?
+        public static String getFlagColour() throws IOException {
             Document doc= Jsoup.connect(flag_url).get();
             Element content= doc.getElementById("status");
             flag = Objects.requireNonNull(content.getElementsByTag("p").first()).text();
-            Pattern pattern= Pattern.compile("The flag is currently (Green|Red/Yellow|Red|Yellow)");
+            Pattern pattern= Pattern.compile("The flag is  (Green|Red/Yellow|Red|Yellow)");
             Matcher matcher= pattern.matcher(flag);
             if(matcher.matches()){
                 flag= matcher.group(1);

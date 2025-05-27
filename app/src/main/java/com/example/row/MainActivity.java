@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         }
         Flags.getFlagColour();
         String flagColor = Flags.getFlag();
-        if (flagColor == "Red/Yellow") {
+        if (Objects.equals(flagColor, "Red/Yellow")) {
             flagColor = "orange";
         }
         WindData wind = new WindData();
@@ -143,6 +143,8 @@ public class MainActivity extends AppCompatActivity {
         TextView sunsetTime = findViewById(R.id.sunsetTime);
         TextView rainChance = findViewById(R.id.rainChance);
         TextView uvValue = findViewById(R.id.currentUVValue);
+        TextView flagText= findViewById(R.id.currentFlagValue);
+        flagText.setText(flagColor.toUpperCase());
         LineChart lineChart = findViewById(R.id.lineChart);
 
         Map<LocalTime, String> weatherState = weather.getGeneralWeatherState();

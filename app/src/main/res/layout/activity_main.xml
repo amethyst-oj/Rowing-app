@@ -243,8 +243,8 @@
 
     <ImageButton
         android:id="@+id/to_records"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="#00645555"
@@ -282,8 +282,8 @@
 
     <ImageButton
         android:id="@+id/home_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:adjustViewBounds="true"
@@ -291,10 +291,10 @@
         android:backgroundTint="#00FFFFFF"
         android:cropToPadding="false"
         android:scaleType="fitXY"
-        android:tint="#C0BABA"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/home_foreground" />
+        app:srcCompat="@mipmap/home_foreground"
+        app:tint="#C0BABA" />
 
     <ImageButton
         android:id="@+id/previous_day"
@@ -330,7 +330,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="14dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:text="Green"
+        android:text=
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="15sp"
