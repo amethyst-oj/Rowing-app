@@ -209,33 +209,31 @@
         app:srcCompat="@mipmap/compass_foreground"
         app:tint="#000000" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/temperature"
         android:layout_width="107dp"
         android:layout_height="110dp"
         android:layout_marginTop="104dp"
         android:background="#645555"
-        android:onClick="tempTransition"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/thermo_foreground"
-        app:tint="@android:color/white" />
+        app:tint="#FFFFFF" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/flag"
         android:layout_width="107dp"
         android:layout_height="110dp"
         android:layout_marginStart="25dp"
         android:layout_marginTop="104dp"
         android:background="#645555"
-        android:onClick="flagTransition"
         app:layout_constraintStart_toEndOf="@+id/temperature"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/green_foreground"
-        app:tint="@android:color/white" />
+        app:tint="#FFFFFF" />
 
     <ImageButton
         android:id="@+id/to_records"
@@ -287,10 +285,10 @@
         android:backgroundTint="#00FFFFFF"
         android:cropToPadding="false"
         android:scaleType="fitXY"
-        android:tint="#C0BABA"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/home_foreground" />
+        app:srcCompat="@mipmap/home_foreground"
+        app:tint="#C0BABA" />
 
     <ImageButton
         android:id="@+id/previous_day"

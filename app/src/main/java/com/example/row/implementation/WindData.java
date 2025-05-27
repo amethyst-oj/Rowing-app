@@ -19,6 +19,9 @@ import java.util.List;
 
 
 public class WindData implements Wind{
+    double windSpeed = getWindSpeed();
+    double windDirection = getWindDirection();
+
     //extractDouble takes a string and a key you are trying to locate, fins key and then returns value associated with key
     private static double extractDouble(String text, String key) {
         int start = text.indexOf(key) + key.length();
@@ -76,11 +79,10 @@ public class WindData implements Wind{
         //Same as with getWindDirection
         return getWindData().windSpeed;
     }
-    public String getWindImpactMagnitudeColour(int startX, int startY, int endX, int endY){  //TODO could you make it work with double latitude and longitudes? any harm in just swapping int for double?
+    public String getWindImpactMagnitudeColour(double startX, double startY, double endX, double endY){  //using doubles, issue?
         //Taking a set of coordinates and using the wind data, here we are calculating the magnitude of the impact of the wind
         double riverAngle = Math.atan((double) (endY - startY) /(endX-startX));//Finding the angle of the stretch of the river modelled by the coordinates
-        double windAngle = Math.toRadians(270 - getWindDirection());//Changing from bearing to vector
-        double windSpeed = getWindSpeed(); //TODO can we move this to a field or sth, so that only one api call? unless im misunderstanding the method, maybe run api call on constructor?
+        double windAngle = Math.toRadians(270 - windDirection);//Changing from bearing to vector
         //Split wind into x and y components
         double xWind = Math.cos(windAngle) * windSpeed;
         double yWind = Math.sin(windAngle) * windSpeed;

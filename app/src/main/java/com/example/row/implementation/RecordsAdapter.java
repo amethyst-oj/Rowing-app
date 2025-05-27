@@ -16,11 +16,11 @@ import com.example.row.RecordDetailsActivity;
 import com.example.row.RecordsActivity;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.*;
 //for implementing recycleview, records list
 public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHolder> {
     private final Records localDataSet;
-    private final List<SingleRecord> recList;
+    private ArrayList<SingleRecord> recList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final ImageButton rowButton;
@@ -31,9 +31,9 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rowButton = itemView.findViewById(R.id.row_button);
-            timeText = itemView.findViewById(R.id.time);
-            dateText = itemView.findViewById(R.id.date);
-            distText = itemView.findViewById(R.id.dist);
+            timeText = itemView.findViewById(R.id.specific_time);
+            dateText = itemView.findViewById(R.id.specific_date);
+            distText = itemView.findViewById(R.id.specific_dist);
         }
         public void bind(String timeData, String dateData, String distData) {
             timeText.setText(timeData);
@@ -52,7 +52,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
 
     public RecordsAdapter(Records dataSet) {
         localDataSet = dataSet;
-        this.recList = localDataSet.getRecordsChronologically();
+        this.recList = new ArrayList<>(dataSet.getRecordsChronologically());
     }
 
     @NonNull
@@ -72,6 +72,12 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return localDataSet.count;
+        return recList.size();
+    }
+
+    public void refresh() {
+        recList.clear();
+        recList.addAll(localDataSet.getRecordsChronologically());
+        notifyDataSetChanged();
     }
 }

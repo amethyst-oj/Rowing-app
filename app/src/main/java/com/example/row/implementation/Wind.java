@@ -13,7 +13,7 @@ public interface Wind {
      * they can convert that into colours and vectors accordingly. This calculates the impact of the wind on
      * each straight section of the river. The input parameters are in pixels with the bottom left = (0,0).
      */
-    String getWindImpactMagnitudeColour(int startX, int startY, int endX, int endY);
+    String getWindImpactMagnitudeColour(double startX, double startY, double endX, double endY);
 
     List<Double> getWindImpactMagnitudeVector(int startX, int startY, int endX, int endY);
 
