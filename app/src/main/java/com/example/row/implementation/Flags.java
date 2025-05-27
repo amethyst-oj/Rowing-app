@@ -27,6 +27,7 @@ public class Flags {
             Pattern pattern= Pattern.compile("The flag is  (Green|Red/Yellow|Red|Yellow)");
             Matcher matcher= pattern.matcher(flag);
             if(matcher.matches()){
+
                 flag= matcher.group(1);
             }
             return flag;
