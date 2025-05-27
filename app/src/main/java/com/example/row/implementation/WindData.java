@@ -4,6 +4,9 @@ package com.example.row.implementation;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.HttpRequest;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,8 +22,8 @@ import java.util.List;
 
 
 public class WindData implements Wind{
-    double windSpeed = getWindSpeed();
-    double windDirection = getWindDirection();
+    private double windSpeed;
+    private double windDirection;
 
     //extractDouble takes a string and a key you are trying to locate, fins key and then returns value associated with key
     private static double extractDouble(String text, String key) {
@@ -33,19 +36,19 @@ public class WindData implements Wind{
         return Double.parseDouble(text.substring(start, end).trim());
     }
     @Override
-    public WindDataPoint getWindData() {
+    public void getWindData() {
+        String apiKey = "9ae03fe30b1582eb943b576d73e32620";
+        String url = "https://api.openweathermap.org/data/2.5/weather?lat=52.2&lon=0.117&appid=" + apiKey + "&units=metric";
+
         try {
             //Getting data from API
-            String apiKey = "9ae03fe30b1582eb943b576d73e32620";
-            String url = "https://api.openweathermap.org/data/2.5/weather?lat=52.2&lon=0.117&appid=" + apiKey + "&units=metric";
             URL url_wind= new URL(url);
             HttpURLConnection urlConnection= (HttpURLConnection) url_wind.openConnection();
             try{
                 BufferedReader input= new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                urlConnection.setRequestMethod("POST");
-                urlConnection.setRequestProperty("Content-Type", "application/json");
-                urlConnection.setDoOutput(true);
+                urlConnection.setRequestMethod("GET");
                 int responseCode= urlConnection.getResponseCode();
+
                 StringBuilder inLine= new StringBuilder();
                 String body = "";
                 if (responseCode==HttpURLConnection.HTTP_OK){
@@ -55,29 +58,28 @@ public class WindData implements Wind{
                     }
                     body = String.valueOf(inLine);
                 }
-                double windSpeed = extractDouble(body, "\"speed\":");
-                double windDirection = extractDouble(body, "\"deg\":");
-                return new WindDataPoint(windSpeed, windDirection);
+                JSONObject json = new JSONObject(body);
+                windSpeed = json.getJSONObject("wind").getDouble("speed");
+                windDirection = json.getJSONObject("wind").getDouble("deg");
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             } finally {
                 urlConnection.disconnect();
             }
             // Extract values
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-
-
     public double getWindDirection(){
         //Data has been retrieved in getWindData function so simple to get
-        return getWindData().windDirection;
+        return windDirection;
     }
 
     public double getWindSpeed(){
         //Same as with getWindDirection
-        return getWindData().windSpeed;
+        return windSpeed;
     }
     public String getWindImpactMagnitudeColour(double startX, double startY, double endX, double endY){  //using doubles, issue?
         //Taking a set of coordinates and using the wind data, here we are calculating the magnitude of the impact of the wind

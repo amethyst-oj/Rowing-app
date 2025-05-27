@@ -2,6 +2,7 @@
 package com.example.row.implementation;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -17,14 +18,16 @@ public class CurrentWeatherApi{
         this.weatherdata = fetchCurrentWeather(apiKey, location);
     }
     public static WeatherResponse fetchCurrentWeather(String apiKey, String location) {
-        //String apiKey = "d8f21a5e71ff4fb99bc131927252005";
-        //String location = "Cambridge";
+        //apiKey = "c283fac38f0347adb3b154902252705";
+        //location = "Cambridge";
         String urlString = "http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + location;
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
-            if (conn.getResponseCode() == HttpURLConnection.HTTP_OK) {
+
+            int x= conn.getResponseCode();
+            if (x == 200) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 String inputLine;
                 StringBuilder response = new StringBuilder();
@@ -36,24 +39,15 @@ public class CurrentWeatherApi{
 
                 Gson gson = new Gson();
                 WeatherResponse weather = gson.fromJson(response.toString(), WeatherResponse.class);
-                //System.out.println("UV Index: " + weather.current.uv);
-                //System.out.println("Response:\n" + response.toString());
                 return weather;
-            /*System.out.println("City: " + weather.location.name);
-            System.out.println("Temperature (°C): " + weather.current.temp_c);
-            System.out.println("Humidity: " + weather.current.humidity);
-            System.out.println("Condition: " + weather.current.condition.text);
-            System.out.println("Wind Speed (kph): " + weather.current.wind_kph);
-            System.out.println("Wind direction: " + weather.current.wind_dir);
-            System.out.println("Wind degree: " + weather.current.wind_degree);
-            System.out.println("Gust kph: " + weather.current.gust_kph);*/
-                //System.out.println("UV Index: " + weather.current.uv);
-                // Print the response
-                //System.out.println("Response:\n" + response.toString());
+
             } else {
                 System.out.println("GET request failed. Response Code: " + conn.getResponseCode());
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         } catch (Exception e) {
+            System.err.println("Other causes");
             e.printStackTrace();
         }
         return null;
