@@ -69,7 +69,7 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         SingleRecord cur = recList.get(position);
         LocalDateTime rel = cur.getDateTime();
 
-        holder.bind(rel.toLocalTime().toString(), rel.toLocalDate().toString(), Integer.toString(cur.getDistance()));
+        holder.bind(String.valueOf(cur.getTimeTaken()), rel.toLocalDate().toString(), Integer.toString(cur.getDistance()));
     }
 
     @Override
@@ -77,9 +77,9 @@ public class RecordsAdapter extends RecyclerView.Adapter<RecordsAdapter.ViewHold
         return recList.size();
     }
 
-    public void refresh() {
+    public void refresh(Records dataset) {
         recList.clear();
-        recList.addAll(localDataSet.getRecordsChronologically());
+        recList.addAll(dataset.getRecordsChronologically());
         notifyDataSetChanged();
     }
 }

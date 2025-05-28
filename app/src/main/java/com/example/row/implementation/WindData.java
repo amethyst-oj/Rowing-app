@@ -97,9 +97,9 @@ public class WindData implements Wind{
         //So the boat will be slowed down by the parallel effect
         //Boat will be pushed to the side by the perpendicular effect which considers right to be positive and left to be negative
         //Not going to use perpendicular in this case but useful to have if any changes were made
-        if (parallel < -7.5) return "Red";
-        else if (parallel>7.5) return "Green";
-        else return "Yellow";
+        if (parallel < -7.5) return "#FF0000";
+        else if (parallel>7.5) return "#00FF00";
+        else return "#FFFF00";
     }
 
     public List<Double> getWindImpactMagnitudeVector(int startX, int startY, int endX, int endY){

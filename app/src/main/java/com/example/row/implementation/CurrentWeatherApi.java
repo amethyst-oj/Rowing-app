@@ -1,6 +1,8 @@
 //Current Weather Conditions
 package com.example.row.implementation;
 
+import android.util.ArrayMap;
+
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -9,13 +11,14 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public class CurrentWeatherApi{
     private WeatherResponse weatherdata;
     private static Map<LocalTime,String> forecastdata= new HashMap<>();
-    private static Map<LocalTime,String> nextTemps=new HashMap<>();
+    private static Map<LocalTime, Long> nextTemps=new HashMap<>();
     public CurrentWeatherApi (String apiKey, String location) {
         this.weatherdata = fetchCurrentWeather(apiKey, location);
     }
@@ -85,9 +88,13 @@ public class CurrentWeatherApi{
                 outerloop:
                 for (Forecastday day: forecast.forecast.forecastday){
                     for (Hour hour: day.hour){
+                        LocalTime hourInLocalTime = LocalTime.parse(hour.time.split(" ")[1]);
+                        if (now.isAfter(hourInLocalTime)) {
+                            continue;
+                        }
                         if (hour.time_epoch >= current.time_epoch || hour.time_epoch - current.time_epoch > -3600){
-                            forecastdata.put(LocalTime.parse(hour.time.split(" ")[1]),hour.condition.text);
-                            nextTemps.put(LocalTime.parse(hour.time.split(" ")[1]), String.valueOf((int) Math.round(hour.temp_c)));
+                            forecastdata.put(hourInLocalTime, hour.condition.icon);
+                            nextTemps.put(hourInLocalTime, Math.round(hour.temp_c));
                             if (hoursNeeded==forecastdata.size()){
                                 break outerloop;
                             }
@@ -106,12 +113,11 @@ public class CurrentWeatherApi{
         return;
     }
     public Map<LocalTime, Double> getExternalTempData() {
-        Map<LocalTime, Double> temp = new HashMap<>();
-        if (weatherdata != null && weatherdata.current != null) {
-            LocalTime now = LocalTime.now().withMinute(0).withSecond(0).withNano(0);
-            temp.put(now, weatherdata.current.temp_c);
+        Map<LocalTime, Double> temps = new ArrayMap<>();
+        for (Map.Entry<LocalTime, Long> entry : nextTemps.entrySet()) {
+            temps.put(entry.getKey(),entry.getValue().doubleValue());
         }
-        return temp;
+        return temps;
     }
     public Map<LocalTime, Double> getUVData() {
         Map<LocalTime, Double> UV = new HashMap<>();

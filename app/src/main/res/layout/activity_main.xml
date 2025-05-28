@@ -181,7 +181,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/compass" />
+        app:layout_constraintTop_toBottomOf="@+id/map" />
 
     <ImageButton
         android:id="@+id/next_day"
@@ -191,28 +191,41 @@
         android:adjustViewBounds="true"
         android:background="#00FFFFFF"
         android:cropToPadding="false"
-        android:onClick="toNextDay"
         android:scaleType="fitXY"
         app:layout_constraintStart_toEndOf="@+id/day"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/arrow_right_foreground"
         app:tint="#FFFFFF"
-        tools:ignore="SpeakableTextPresentCheck" />
+        tools:ignore="SpeakableTextPresentCheck"
+        android:visibility="gone" />
 
-    <ImageButton
-        android:id="@+id/compass"
+    <ImageView
+        android:id="@+id/compassBackground"
         android:layout_width="107dp"
         android:layout_height="110dp"
         android:layout_marginTop="120dp"
         android:layout_marginEnd="24dp"
         android:background="@color/slate"
+        app:layout_constraintEnd_toStartOf="@+id/temperature"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/slate"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <!-- added background as separate view above!-->
+    <ImageButton
+        android:id="@+id/map"
+        android:layout_width="107dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="24dp"
+        android:backgroundTint="#00FFFFFF"
         android:onClick="mapTransition"
         android:rotation="0"
         app:layout_constraintEnd_toStartOf="@+id/temperature"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/compass_foreground"
-        app:tint="#FFFFFF"
         tools:ignore="SpeakableTextPresentCheck" />
+
 
     <ImageButton
         android:id="@+id/temperature"
@@ -325,7 +338,7 @@
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toStartOf="@+id/temperatureText"
-        app:layout_constraintTop_toBottomOf="@+id/compass" />
+        app:layout_constraintTop_toBottomOf="@+id/map" />
 
     <TextView
         android:id="@+id/currentFlagValue"

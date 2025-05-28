@@ -3,9 +3,7 @@ package com.example.row;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CalendarView;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -17,13 +15,11 @@ import androidx.recyclerview.widget.*;
 
 import com.example.row.implementation.Records;
 import com.example.row.implementation.RecordsAdapter;
+import com.example.row.implementation.RecordsStore;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.time.format.DateTimeParseException;
 
 public class RecordsActivity extends AppCompatActivity {
     Records records;
@@ -39,15 +35,19 @@ public class RecordsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        RecordsStore store = (RecordsStore) getApplicationContext();
+        records = store.getRecords();
+        if (records==null) {
+            try {
+                records = new Records();
+                records.newRecord(LocalDateTime.now(), 1000, 50);
+                store.setRecords(records);
+            } catch (Records.RecordOverlapException e) {
+                throw new RuntimeException(e);
+            }
+        }
         RecyclerView recyclerView = findViewById(R.id.mlist);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        records = new Records();
-        try {
-            records.newRecord(LocalDateTime.now(), 0, 0);
-        } catch (Records.RecordOverlapException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
         recAdapter = new RecordsAdapter(records);
         recyclerView.setAdapter(recAdapter);
     }
@@ -72,19 +72,13 @@ public class RecordsActivity extends AppCompatActivity {
         try {
             int distVal = Integer.parseInt(distInput.getText().toString().trim());
             int timeVal = Integer.parseInt(timeTakenInput.getText().toString().trim());
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate intermediateDate = LocalDate.parse(dateInput.getText().toString().trim(), formatter);
-            Pattern pattern = Pattern.compile(("^(((0[1-9]|1\\d|2[0-8])/(0[1-9]|1[0-2]))|((29|30)/(0[13-9]|1[0-2]))|(31/(0[13578]|1[02])))/([1-9]\\d{3})$|^(29/02/((([1-9]\\d)((0[48]|[2468][048]|[13579][26]))|((([2468][048]|[13579][26])00))))$)"));
-            Matcher matcher = pattern.matcher(intermediateDate.toString());
-            if(matcher.find()) {
-                LocalDateTime date = intermediateDate.atStartOfDay();;
-                records.newRecord(date,distVal,timeVal);
-            } else {
-                throw new NumberFormatException();
-            }
+            LocalDate intermediateDate = LocalDate.parse(dateInput.getText().toString().trim());
             LocalDateTime date = intermediateDate.atStartOfDay();;
             records.newRecord(date,distVal,timeVal);
-        }catch (NumberFormatException nfe){
+            RecordsStore store = (RecordsStore) getApplicationContext();
+            store.setRecords(records);
+
+        }catch (DateTimeParseException nfe){
             Toast.makeText(this, "Invalid data input", Toast.LENGTH_SHORT).show();
         }
 
@@ -94,8 +88,8 @@ public class RecordsActivity extends AppCompatActivity {
         timeTakenInput.setVisibility(View.GONE);
         distInput.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
-        recAdapter.refresh();
-;    }
+        recAdapter.refresh(records);
+    }
 
     public void toMain(View v) {
         Intent main_Intent = new Intent(this, MainActivity.class);
@@ -104,7 +98,6 @@ public class RecordsActivity extends AppCompatActivity {
 
     public void toGraph(View v) {
         Intent graphIntent = new Intent(this, RecordGraphActivity.class);
-        graphIntent.putExtra("records",records);
         startActivity(graphIntent);
     }
 }

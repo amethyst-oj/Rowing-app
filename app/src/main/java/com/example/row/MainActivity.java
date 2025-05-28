@@ -1,6 +1,7 @@
 package com.example.row;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,19 +18,22 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.row.implementation.CombinedWeatherSmile;
 import com.example.row.implementation.Flags;
-import com.example.row.implementation.IconMap;
+import com.bumptech.glide.Glide;
+import com.example.row.implementation.Records;
 import com.example.row.implementation.WindData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.*;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
+    Records records;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,20 +64,20 @@ public class MainActivity extends AppCompatActivity {
         startActivity(map_Intent);
     }
 
-    public void toNextDay(View v) throws IOException {
-        ImageButton nextDay = findViewById(R.id.next_day);
-        ImageButton prevDay = findViewById(R.id.previous_day);
-        TextView day = findViewById(R.id.day);
-        nextDay.setVisibility(View.GONE);
-        prevDay.setVisibility(View.VISIBLE);
-        day.setText("TOMORROW");
-        //initializeData(LocalTime.MAX);
-    }
+//    public void toNextDay(View v) throws IOException {
+//        ImageButton nextDay = findViewById(R.id.next_day);
+//        ImageButton prevDay = findViewById(R.id.previous_day);
+//        TextView day = findViewById(R.id.day);
+//        nextDay.setVisibility(View.GONE);
+//        prevDay.setVisibility(View.VISIBLE);
+//        day.setText("TOMORROW");
+//        initializeData(LocalTime.);
+//    }
     public void toPrevDay(View v) throws IOException {
-        ImageButton nextDay = findViewById(R.id.next_day);
+        //ImageButton nextDay = findViewById(R.id.next_day);
         ImageButton prevDay = findViewById(R.id.previous_day);
         TextView day = findViewById(R.id.day);
-        nextDay.setVisibility(View.VISIBLE);
+        //nextDay.setVisibility(View.VISIBLE);
         prevDay.setVisibility(View.GONE);
         day.setText("TODAY");
         initializeData(LocalTime.now());
@@ -97,17 +101,6 @@ public class MainActivity extends AppCompatActivity {
         executor.execute(() -> {
             CombinedWeatherSmile weather = new CombinedWeatherSmile();  // Does network call inside
             LocalTime key = currentTime.withMinute(0).withSecond(0).withNano(0);
-            int curTemperature = (int) Math.round(weather.getExternalTemperatureData().get(key));
-            String thermoColor;
-            if (curTemperature > 25) {
-                thermoColor = "red";
-            } else if (curTemperature <= 10) {
-                thermoColor = "blue";
-            } else {
-                thermoColor = "yellow";
-            }
-
-            String finalThermoColor = thermoColor;
             String flagColor;
             try {
                 flagColor = Flags.getFlagColour();
@@ -141,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 // Now safely update the UI here
                 ImageView thermometer = findViewById(R.id.temperature);
                 ImageView flagIcon = findViewById(R.id.flag);
-                ImageView compass = findViewById(R.id.compass);
+                ImageView compass = findViewById(R.id.map);
                 TextView temperatureText = findViewById(R.id.temperatureText);
                 TextView windText = findViewById(R.id.windText);
 
@@ -150,13 +143,22 @@ public class MainActivity extends AppCompatActivity {
                 ImageView[] whr= {weatherNow,weather1hr,weather2hr,weather3hr,weather4hr};
                 int i=0;
                 while ( finalWeatherState.get(key.plusHours(i)) != null){
-                String icon = finalWeatherState.get(key.plusHours(i));
-                int resID = IconMap.getIconMap().get(icon);
-                weathers[i] = resID;
-                whr[i].setImageResource(weathers[i]);
+                String iconURL = String.format("https:%s",finalWeatherState.get(key.plusHours(i)));
+                Glide.with(this).load(iconURL).into(whr[i]);
                 i++;
             };
+                Map<LocalTime, Double> allTemperature = weather.getExternalTemperatureData();
+                int curTemperature = allTemperature.get(key).intValue();
+                String thermoColor;
+                if (curTemperature > 25) {
+                    thermoColor = "red";
+                } else if (curTemperature <= 10) {
+                    thermoColor = "blue";
+                } else {
+                    thermoColor = "yellow";
+                }
 
+                String finalThermoColor = thermoColor;
                 sunriseTime.setText(weather.getSunrise());
                 sunsetTime.setText(weather.getSunset());
                 int cor= (weather.getChanceOfRain());
@@ -169,6 +171,19 @@ public class MainActivity extends AppCompatActivity {
                 windText.setText(String.format(Locale.getDefault(), "%dKM/H", Math.round(windSpeed)));
                 temperatureText.setText(String.format(Locale.getDefault(), "%d°", curTemperature));
 
+                TextView temp0 = findViewById(R.id.w0text);
+                TextView temp1 = findViewById(R.id.w1text);
+                TextView temp2 = findViewById(R.id.w2text);
+                TextView temp3 = findViewById(R.id.w3text);
+                TextView temp4 = findViewById(R.id.w4text);
+
+                TextView[] tempUnderWeathers= {temp0,temp1,temp2,temp3,temp4};
+                int j=0;  //im sorry i just want to end this
+                while (allTemperature.get(key.plusHours(j)) != null){
+                    String tempText = String.format("%d °", Math.round(allTemperature.get(key.plusHours(j))));
+                    tempUnderWeathers[j].setText(tempText);
+                    j++;
+                }
             });
         });
     }

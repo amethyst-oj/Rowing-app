@@ -39,7 +39,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        //initialize(LocalDateTime.now());
+        initialize(LocalDateTime.now());
         Bundle extras = getIntent().getExtras();
         if (extras!=null) {
             String time = extras.getString("timeTaken");

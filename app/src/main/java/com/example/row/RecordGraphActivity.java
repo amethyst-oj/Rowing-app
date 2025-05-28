@@ -2,7 +2,6 @@ package com.example.row;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.SeekBar;
@@ -35,14 +34,17 @@ public class RecordGraphActivity extends AppCompatActivity {
         SeekBar seekBar = findViewById(R.id.seekBar);
         TextView distanceText = findViewById(R.id.distance_display);
         LineChart linechart = findViewById(R.id.lineChartTime);
-
-        Bundle extras = getIntent().getExtras();
-        if (!extras.isEmpty()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                records = extras.getParcelable("records", Records.class);
+        RecordsStore store = (RecordsStore) getApplicationContext();
+        records = store.getRecords();
+        if (records==null) {
+            try {
+                records = new Records();
+                records.newRecord(LocalDateTime.now(), 1000, 50);
+            } catch (Records.RecordOverlapException e) {
+                throw new RuntimeException(e);
             }
-            graph(linechart, records);
         }
+        graph(linechart, records);
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -75,10 +77,12 @@ public class RecordGraphActivity extends AppCompatActivity {
     }
     public void recordsTransition(View v) {
         Intent records_Intent = new Intent(this, RecordsActivity.class);
+        records_Intent.putExtra("records",records);
         startActivity(records_Intent);
     }
     public void toMain(View v) {
         Intent main_Intent = new Intent(this, MainActivity.class);
+        main_Intent.putExtra("records", records);
         startActivity(main_Intent);
     }
 
