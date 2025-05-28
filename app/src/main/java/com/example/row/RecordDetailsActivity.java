@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.row.implementation.CombinedWeatherSmile;
 import com.example.row.implementation.IconMap;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -70,7 +71,14 @@ public class RecordDetailsActivity extends AppCompatActivity {
             TextView sunsetTime = findViewById(R.id.sunsetTime);
             TextView rainChance = findViewById(R.id.rainChance);
             new Handler(Looper.getMainLooper()).post(() -> {
-                Map<LocalTime, String> weatherState = weather.getGeneralWeatherState();
+                Map<LocalTime, String> weatherState = null;
+                try {
+                    String apiKey = "c283fac38f0347adb3b154902252705";
+                    String location = "Cambridge";
+                    weatherState = weather.getGeneralWeatherState(apiKey,location );
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
                 int[] weathers = new int[5];  //get weather states for next 4 hours
                 for (int i = 0; i < 5; i++) {
                     String icon = weatherState.get(currentTime.plusHours(i));

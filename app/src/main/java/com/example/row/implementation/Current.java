@@ -1,6 +1,8 @@
 package com.example.row.implementation;
 public class Current {
     public double temp_c;
+
+    public int time_epoch;
     public double uv;
     public Condition condition;
     public double wind_kph;

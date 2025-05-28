@@ -1,5 +1,7 @@
 package com.example.row.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import java.time.LocalTime;
 import java.util.Map;
 
@@ -49,8 +51,8 @@ public class CombinedWeatherSmile implements Weather{
     }
 
     @Override
-    public Map<LocalTime, String> getGeneralWeatherState() {  //TODO what are the possible output strings?
-        return CurrentApi.getGeneralWeatherState();
+    public Map<LocalTime, String> getGeneralWeatherState(String apiKey, String location) throws JsonProcessingException {
+        return CurrentWeatherApi.getGeneralConditions( apiKey,  location);
     }
 
     @Override

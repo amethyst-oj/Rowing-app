@@ -16,11 +16,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.row.implementation.CombinedWeatherSmile;
-import com.example.row.implementation.CurrentWeatherApi;
 import com.example.row.implementation.Flags;
 import com.example.row.implementation.IconMap;
-import com.example.row.implementation.WeatherResponse;
 import com.example.row.implementation.WindData;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.*;
 
@@ -125,11 +124,19 @@ public class MainActivity extends AppCompatActivity {
             double windDirection = wind.getWindDirection();
             double windSpeed = wind.getWindSpeed();
 
-            Map<LocalTime, String> weatherState = weather.getGeneralWeatherState();
+            Map<LocalTime, String> weatherState = null;
+            try {
+                String apiKey = "c283fac38f0347adb3b154902252705";
+                String location = "Cambridge";
+                weatherState = weather.getGeneralWeatherState(apiKey,location);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
             Map<LocalTime, Double> uvValues = weather.getUVData();
             String finalFlagColor = flagColor;
             int uvVal= (int) Math.round(uvValues.get(key));
 
+            Map<LocalTime, String> finalWeatherState = weatherState;
             new Handler(Looper.getMainLooper()).post(() -> {
                 // Now safely update the UI here
                 ImageView thermometer = findViewById(R.id.temperature);
@@ -140,29 +147,28 @@ public class MainActivity extends AppCompatActivity {
 
                 uvValue.setText(String.valueOf(uvVal));
                 uvGraph(lineChart, uvValues);
-
-            for (int i = 0; i < 5; i++) {
-                String icon = weatherState.get(key.plusHours(i));
+                ImageView[] whr= {weatherNow,weather1hr,weather2hr,weather3hr,weather4hr};
+                int i=0;
+                while ( finalWeatherState.get(key.plusHours(i)) != null){
+                String icon = finalWeatherState.get(key.plusHours(i));
                 int resID = IconMap.getIconMap().get(icon);
                 weathers[i] = resID;
-                weatherNow.setImageResource(weathers[0]);
-                weather1hr.setImageResource(weathers[1]);
-                weather2hr.setImageResource(weathers[2]);
-                weather3hr.setImageResource(weathers[3]);
-                weather4hr.setImageResource(weathers[4]);
-
+                whr[i].setImageResource(weathers[i]);
+                i++;
+            };
 
                 sunriseTime.setText(weather.getSunrise());
                 sunsetTime.setText(weather.getSunset());
-                rainChance.setText(weather.getChanceOfRain());
+                int cor= (weather.getChanceOfRain());
+                rainChance.setText(String.valueOf(cor));
                 int realThermoColor = Color.parseColor(finalThermoColor);
                 int realFlagColor = Color.parseColor(finalFlagColor);
                 thermometer.setImageTintList(ColorStateList.valueOf(realThermoColor));
                 flagIcon.setImageTintList(ColorStateList.valueOf(realFlagColor));
                 compass.setRotation(Math.round(-35 + windDirection));
-                windText.setText((int) Math.round(windSpeed) + "KM/H");
-                temperatureText.setText((int) curTemperature + "°");
-                };
+                windText.setText(String.format(Locale.getDefault(), "%dKM/H", Math.round(windSpeed)));
+                temperatureText.setText(String.format(Locale.getDefault(), "%d°", curTemperature));
+
             });
         });
     }

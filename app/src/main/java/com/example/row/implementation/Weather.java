@@ -1,5 +1,7 @@
 package com.example.row.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import java.time.LocalTime;
 import java.util.Map;
 
@@ -8,7 +10,10 @@ public interface Weather {
     Map<LocalTime, Double> getUVData();
     double getWaterTemperatureData();
     double getWaterPerformanceImpact();
-    Map<LocalTime, String> getGeneralWeatherState();
+
+
+    Map<LocalTime, String> getGeneralWeatherState(String apiKey, String location) throws JsonProcessingException;
+
     int getChanceOfRain();
     String getSunrise();
     String getSunset();

@@ -1,11 +1,12 @@
 //Past Weather Conditions index (date + time)
 package com.example.row.implementation;
 
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import com.google.gson.Gson;
 
 public class FutureWeatherResponse {
     private WeatherResponse Forecast;
@@ -42,7 +43,7 @@ public class FutureWeatherResponse {
     }
 
     public Integer getChanceOfRain() {
-        return Forecast != null ? Forecast.forecast.forecastday.get(0).hour.get(hour).chance_of_rain : null;
+        return Forecast != null ? Forecast.forecast.forecastday.get(0).hour.get(hour).chance_of_rain : 0;
     }
 
     public String getSunrise() {

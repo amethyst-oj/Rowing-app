@@ -1,11 +1,12 @@
 package com.example.row.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import java.time.LocalTime;
 import java.util.Map;
 
 public class TestingDriver {
-    public static void main(String[] args) {
-        System.out.println("=== Woohooo ===");
+    public static void main(String[] args) throws JsonProcessingException {
         String where = "Cambridge";
         String api = "d8f21a5e71ff4fb99bc131927252005";
         double lat = 52.2098389;
@@ -13,7 +14,7 @@ public class TestingDriver {
         Weather current = new CombinedWeatherSmile(api, where, lat, lon);
         Map<LocalTime, Double> Temp = current.getExternalTemperatureData();
         Map<LocalTime, Double> UV = current.getUVData();
-        Map<LocalTime, String> Conditions = current.getGeneralWeatherState();
+        Map<LocalTime, String> Conditions = current.getGeneralWeatherState(api,where);
         double waterTemp = current.getWaterTemperatureData();
         int cRain = current.getChanceOfRain();
         String sunrise = current.getSunrise();
