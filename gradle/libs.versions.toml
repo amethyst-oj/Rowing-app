@@ -1,5 +1,6 @@
 [versions]
 agp = "8.7.3"
+dotlottieAndroid = "0.5.0"
 glideVersion = "4.16.0"
 gson = "2.10.1"
 jacksonModuleKotlin = "2.19"
@@ -16,6 +17,7 @@ mpandroidchart = "v3.1.0"
 playServicesMaps = "19.2.0"
 
 [libraries]
+dotlottie-android = { module = "com.github.LottieFiles:dotlottie-android", version.ref = "dotlottieAndroid" }
 github-glide = { module = "com.github.bumptech.glide:glide", version.ref = "glideVersion" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jacksonModuleKotlin" }

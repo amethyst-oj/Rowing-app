@@ -17,12 +17,12 @@ import java.util.Map;
 
 public class CurrentWeatherApi{
     private WeatherResponse weatherdata;
-    private static Map<LocalTime,String> forecastdata= new HashMap<>();
-    private static Map<LocalTime, Long> nextTemps=new HashMap<>();
+    private static HashMap<LocalTime,String> forecastdata= new HashMap<>();
+    private static HashMap<LocalTime, Long> nextTemps=new HashMap<>();
     public CurrentWeatherApi (String apiKey, String location) {
         this.weatherdata = fetchCurrentWeather(apiKey, location);
     }
-    public static Map<LocalTime,String> getGeneralConditions(String apiKey, String location){
+    public static HashMap<LocalTime,String> getGeneralConditions(String apiKey, String location){
         getForecast( apiKey,  location);
         return forecastdata;
     }
@@ -112,15 +112,17 @@ public class CurrentWeatherApi{
         }
         return;
     }
-    public Map<LocalTime, Double> getExternalTempData() {
-        Map<LocalTime, Double> temps = new ArrayMap<>();
+    public HashMap<LocalTime, Double> getExternalTempData() {
+        HashMap<LocalTime, Double> temps = new HashMap<>();
         for (Map.Entry<LocalTime, Long> entry : nextTemps.entrySet()) {
             temps.put(entry.getKey(),entry.getValue().doubleValue());
         }
         return temps;
     }
-    public Map<LocalTime, Double> getUVData() {
-        Map<LocalTime, Double> UV = new HashMap<>();
+
+
+    public HashMap<LocalTime, Double> getUVData() {
+        HashMap<LocalTime, Double> UV = new HashMap<>();
         if (weatherdata != null && weatherdata.current != null) {
             LocalTime now = LocalTime.now().withMinute(0).withSecond(0).withNano(0);
             UV.put(now, weatherdata.current.uv);

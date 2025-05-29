@@ -16,6 +16,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.row.implementation.BundleData;
+import com.example.row.implementation.BundleSingleton;
 import com.example.row.implementation.CombinedWeatherSmile;
 import com.example.row.implementation.Flags;
 import com.bumptech.glide.Glide;
@@ -24,6 +26,8 @@ import com.example.row.implementation.WindData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.*;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -34,12 +38,16 @@ import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
     Records records;
+    BundleData bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+        bundle = BundleSingleton.getInstance();
+
+        EdgeToEdge.enable(this);
+
         ImageButton prevDay = findViewById(R.id.previous_day);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -52,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
            throw new RuntimeException(e);
         }
+        View mainRoot = findViewById(R.id.main);
+        mainRoot.setVisibility(View.VISIBLE);
     }
 
     public void recordsTransition(View v) {
@@ -66,18 +76,18 @@ public class MainActivity extends AppCompatActivity {
 
 //    public void toNextDay(View v) throws IOException {
 //        ImageButton nextDay = findViewById(R.id.next_day);
-//        ImageButton prevDay = findViewById(R.id.previous_day);
+//      ImageButton prevDay = findViewById(R.id.previous_day);
 //        TextView day = findViewById(R.id.day);
 //        nextDay.setVisibility(View.GONE);
 //        prevDay.setVisibility(View.VISIBLE);
 //        day.setText("TOMORROW");
 //        initializeData(LocalTime.);
-//    }
+//        }
     public void toPrevDay(View v) throws IOException {
-        //ImageButton nextDay = findViewById(R.id.next_day);
+        ImageButton nextDay = findViewById(R.id.next_day);
         ImageButton prevDay = findViewById(R.id.previous_day);
         TextView day = findViewById(R.id.day);
-        //nextDay.setVisibility(View.VISIBLE);
+        nextDay.setVisibility(View.VISIBLE);
         prevDay.setVisibility(View.GONE);
         day.setText("TODAY");
         initializeData(LocalTime.now());
@@ -91,45 +101,17 @@ public class MainActivity extends AppCompatActivity {
         ImageView weather2hr = findViewById(R.id.weather2);
         ImageView weather3hr = findViewById(R.id.weather3);
         ImageView weather4hr = findViewById(R.id.weather4);
-
+        LocalTime key = LocalTime.now().withMinute(0).withSecond(0).withNano(0);
         TextView sunriseTime = findViewById(R.id.sunriseTime);
         TextView sunsetTime = findViewById(R.id.sunsetTime);
         TextView rainChance = findViewById(R.id.rainChance);
         TextView uvValue = findViewById(R.id.currentUVValue);
         LineChart lineChart = findViewById(R.id.lineChart);
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(() -> {
-            CombinedWeatherSmile weather = new CombinedWeatherSmile();  // Does network call inside
-            LocalTime key = currentTime.withMinute(0).withSecond(0).withNano(0);
-            String flagColor;
-            try {
-                flagColor = Flags.getFlagColour();
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-
-            if (Objects.equals(flagColor, "Red/Yellow")) {
-                flagColor = "orange";
-            }
-
-            WindData wind = new WindData();
-            double windDirection = wind.getWindDirection();
-            double windSpeed = wind.getWindSpeed();
-
-            Map<LocalTime, String> weatherState = null;
-            try {
-                String apiKey = "c283fac38f0347adb3b154902252705";
-                String location = "Cambridge";
-                weatherState = weather.getGeneralWeatherState(apiKey,location);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-            Map<LocalTime, Double> uvValues = weather.getUVData();
-            String finalFlagColor = flagColor;
+            Map<LocalTime, Double> uvValues = bundle.getUVValues();
+            String finalFlagColor = bundle.getFlagColor();
             int uvVal= (int) Math.round(uvValues.get(key));
 
-            Map<LocalTime, String> finalWeatherState = weatherState;
+            Map<LocalTime, String> finalWeatherState = bundle.getWeatherState();
             new Handler(Looper.getMainLooper()).post(() -> {
                 // Now safely update the UI here
                 ImageView thermometer = findViewById(R.id.temperature);
@@ -137,7 +119,9 @@ public class MainActivity extends AppCompatActivity {
                 ImageView compass = findViewById(R.id.map);
                 TextView temperatureText = findViewById(R.id.temperatureText);
                 TextView windText = findViewById(R.id.windText);
-
+                TextView flagText= findViewById(R.id.currentFlagValue);
+                TextView UVText=findViewById(R.id.uvEvaluation);
+                flagText.setText(finalFlagColor);
                 uvValue.setText(String.valueOf(uvVal));
                 uvGraph(lineChart, uvValues);
                 ImageView[] whr= {weatherNow,weather1hr,weather2hr,weather3hr,weather4hr};
@@ -147,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 Glide.with(this).load(iconURL).into(whr[i]);
                 i++;
             };
-                Map<LocalTime, Double> allTemperature = weather.getExternalTemperatureData();
+                Map<LocalTime, Double> allTemperature = bundle.getTemperatureMap();
                 int curTemperature = allTemperature.get(key).intValue();
                 String thermoColor;
                 if (curTemperature > 25) {
@@ -159,16 +143,17 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 String finalThermoColor = thermoColor;
-                sunriseTime.setText(weather.getSunrise());
-                sunsetTime.setText(weather.getSunset());
-                int cor= (weather.getChanceOfRain());
-                rainChance.setText(String.valueOf(cor));
+                sunriseTime.setText(bundle.getSunrise());
+                sunsetTime.setText(bundle.getSunset());
+                UVText.setText(bundle.getUVInfo(uvVal));
+                int cor= (bundle.getChanceOfRain());
+                rainChance.setText("Chance of rain: "+String.valueOf(cor) + "%");
                 int realThermoColor = Color.parseColor(finalThermoColor);
                 int realFlagColor = Color.parseColor(finalFlagColor);
                 thermometer.setImageTintList(ColorStateList.valueOf(realThermoColor));
                 flagIcon.setImageTintList(ColorStateList.valueOf(realFlagColor));
-                compass.setRotation(Math.round(-35 + windDirection));
-                windText.setText(String.format(Locale.getDefault(), "%dKM/H", Math.round(windSpeed)));
+                compass.setRotation(Math.round(-35 + bundle.getWindDirection()));
+                windText.setText(String.format(Locale.getDefault(), "%dKM/H", Math.round(bundle.getWindSpeed())));
                 temperatureText.setText(String.format(Locale.getDefault(), "%d°", curTemperature));
 
                 TextView temp0 = findViewById(R.id.w0text);
@@ -177,16 +162,22 @@ public class MainActivity extends AppCompatActivity {
                 TextView temp3 = findViewById(R.id.w3text);
                 TextView temp4 = findViewById(R.id.w4text);
 
+                TextView time0 = findViewById(R.id.w0texttop);
+                TextView time1 = findViewById(R.id.w1texttop);
+                TextView time2 = findViewById(R.id.w2texttop);
+                TextView time3 = findViewById(R.id.w3texttop);
+                TextView time4 = findViewById(R.id.w4texttop);
                 TextView[] tempUnderWeathers= {temp0,temp1,temp2,temp3,temp4};
-                int j=0;  //im sorry i just want to end this
+                TextView[] timeOverWeathers= {time0,time1,time2,time3,time4};
+                int j=0;
                 while (allTemperature.get(key.plusHours(j)) != null){
                     String tempText = String.format("%d °", Math.round(allTemperature.get(key.plusHours(j))));
                     tempUnderWeathers[j].setText(tempText);
+                    timeOverWeathers[j].setText(String.valueOf(key.plusHours(j)));
                     j++;
                 }
             });
-        });
-    }
+        };
 
     public void uvGraph(LineChart lineChart, Map<LocalTime, Double> uvValues) {
         List<Entry> entries = new ArrayList<>();

@@ -3,6 +3,7 @@ package com.example.row.implementation;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.Map;
 
 public class CombinedWeatherSmile implements Weather{
@@ -30,12 +31,12 @@ public class CombinedWeatherSmile implements Weather{
         this.FutureApi = new FutureWeatherResponse(apiKey, location);
     }
     @Override
-    public Map<LocalTime, Double> getUVData() {
+    public HashMap<LocalTime, Double> getUVData() {
         return CurrentApi.getUVData();
     }
 
     @Override
-    public Map<LocalTime, Double> getExternalTemperatureData() {
+    public HashMap<LocalTime, Double> getExternalTemperatureData() {
         return CurrentApi.getExternalTempData();
     }
 
@@ -51,7 +52,7 @@ public class CombinedWeatherSmile implements Weather{
     }
 
     @Override
-    public Map<LocalTime, String> getGeneralWeatherState(String apiKey, String location) throws JsonProcessingException {
+    public HashMap<LocalTime, String> getGeneralWeatherState(String apiKey, String location) throws JsonProcessingException {
         return CurrentWeatherApi.getGeneralConditions( apiKey,  location);
     }
 

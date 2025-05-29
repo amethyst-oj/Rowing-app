@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)
+    implementation("com.airbnb.android:lottie:3.4.0")
     implementation(libs.github.glide)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.crashlytics.buildtools)

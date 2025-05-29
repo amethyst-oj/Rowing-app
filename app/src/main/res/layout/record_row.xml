@@ -6,7 +6,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:background="@color/slate">
 
     <ImageButton
         android:id="@+id/row_button"
@@ -22,8 +23,8 @@
         android:id="@+id/specific_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Time"
-        android:textColor="#000"
+        android:text="@string/time"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_gravity="start|top"
         android:padding="8dp"/>
@@ -33,7 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Date"
-        android:textColor="#000"
+        android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_gravity="center"/>
 
@@ -42,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Distance"
-        android:textColor="#000"
+        android:textColor="@color/white"  
         android:textSize="16sp"
         android:layout_gravity="end|bottom"
         android:padding="8dp"/>
