@@ -82,7 +82,6 @@ public class RecordsActivity extends AppCompatActivity {
             Toast.makeText(this, "Invalid data input", Toast.LENGTH_SHORT).show();
         }
 
-
         submitButton.setVisibility(View.GONE);
         dateInput.setVisibility(View.GONE);
         timeTakenInput.setVisibility(View.GONE);
@@ -98,6 +97,7 @@ public class RecordsActivity extends AppCompatActivity {
 
     public void toGraph(View v) {
         Intent graphIntent = new Intent(this, RecordGraphActivity.class);
+
         startActivity(graphIntent);
     }
 }

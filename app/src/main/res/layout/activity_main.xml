@@ -9,17 +9,6 @@
     android:background="@drawable/background_gradient"
     tools:context=".MainActivity">
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/lineChart"
-        android:layout_width="164dp"
-        android:layout_height="99dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="24dp"
-        android:textAlignment="center"
-        app:layout_constraintStart_toEndOf="@+id/currentUVValue"
-        app:layout_constraintTop_toBottomOf="@+id/view3" />
-
-
     <View
         android:id="@+id/mainline"
         android:layout_width="match_parent"
@@ -52,6 +41,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view2"
         app:srcCompat="@drawable/sunrise" />
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="164dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="24dp"
+        android:textAlignment="center"
+        app:layout_constraintStart_toEndOf="@+id/currentUVValue"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
 
     <View
         android:id="@+id/view2"
@@ -528,5 +527,7 @@
         android:textSize="75sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uvLabel" />
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -31,10 +31,6 @@ public class Flags {
         return flag;
     }
 
-        public static String getFlag(){
-            return flag;
-        }
-
         public static void FlagInfo() throws IOException {
             Document doc = Jsoup.connect(info_url).get();
             Elements divContents= doc.select("div.content");
@@ -50,8 +46,7 @@ public class Flags {
     public static String getFlagInfo(){
         return flag_meaning.get(flag);
     }
-        public static void main(String[] args) throws IOException {
-            Flags.getFlagInfo();
-        }
+
+
     }
 

@@ -20,13 +20,15 @@ public class BundleData {
     private HashMap<LocalTime, String> weatherState;
     private HashMap<LocalTime,Double> uvValues;
     private HashMap<LocalTime, Double> temperatureMap;
+
+    private String flagInfo;
     private String sunrise;
     private String sunset;
     private int chanceOfRain;
     public BundleData(String flagColor, double windDirection, double windSpeed,
                       HashMap<LocalTime, String> weatherState, HashMap<LocalTime, Double> uvValues,
                       HashMap<LocalTime, Double> temperatureMap, LocalTime key, String sunrise, String sunset,
-                      int chanceOfRain) {
+                      int chanceOfRain, String flagInfo) {
         this.flagColor = flagColor;
         this.windDirection = windDirection;
         this.key = key;
@@ -37,6 +39,7 @@ public class BundleData {
         this.sunrise = sunrise;
         this.sunset = sunset;
         this.chanceOfRain = chanceOfRain;
+        this.flagInfo = flagInfo;
     }
 
     public LocalTime getKey() {
@@ -59,6 +62,9 @@ public class BundleData {
     }
     public String getFlagColor() {
         return flagColor;
+    }
+    public String getFlagInfo() {
+        return flagInfo;
     }
     public double getWindDirection() {
         return windDirection;

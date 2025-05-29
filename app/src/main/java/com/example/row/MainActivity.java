@@ -45,25 +45,27 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bundle = BundleSingleton.getInstance();
-
         EdgeToEdge.enable(this);
-
-        ImageButton prevDay = findViewById(R.id.previous_day);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        try {
-            toPrevDay(prevDay);
-        } catch (IOException e) {
-            e.printStackTrace();
-           throw new RuntimeException(e);
-        }
         View mainRoot = findViewById(R.id.main);
-        mainRoot.setVisibility(View.VISIBLE);
+        ImageButton prevDay = findViewById(R.id.previous_day);
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            bundle = BundleSingleton.getInstance();
+            if (bundle != null && bundle.getUVValues() != null) {
+                try {
+                    toPrevDay(prevDay);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+                ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+                    Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+                    v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+                    return insets;
+                });
+            }
+        }, 20);
     }
-
     public void recordsTransition(View v) {
         Intent records_Intent = new Intent(this, RecordsActivity.class);
         startActivity(records_Intent);
@@ -74,15 +76,15 @@ public class MainActivity extends AppCompatActivity {
         startActivity(map_Intent);
     }
 
-//    public void toNextDay(View v) throws IOException {
-//        ImageButton nextDay = findViewById(R.id.next_day);
-//      ImageButton prevDay = findViewById(R.id.previous_day);
-//        TextView day = findViewById(R.id.day);
-//        nextDay.setVisibility(View.GONE);
-//        prevDay.setVisibility(View.VISIBLE);
-//        day.setText("TOMORROW");
-//        initializeData(LocalTime.);
-//        }
+    /*public void toNextDay(View v) throws IOException {
+     ImageButton nextDay = findViewById(R.id.next_day);
+        ImageButton prevDay = findViewById(R.id.previous_day);
+        TextView day = findViewById(R.id.day);
+        nextDay.setVisibility(View.GONE);
+        prevDay.setVisibility(View.VISIBLE);
+        day.setText("TOMORROW");
+        initializeData(LocalTime.now().plusDays(1));
+    }*/
     public void toPrevDay(View v) throws IOException {
         ImageButton nextDay = findViewById(R.id.next_day);
         ImageButton prevDay = findViewById(R.id.previous_day);
@@ -175,9 +177,13 @@ public class MainActivity extends AppCompatActivity {
                     tempUnderWeathers[j].setText(tempText);
                     timeOverWeathers[j].setText(String.valueOf(key.plusHours(j)));
                     j++;
+
                 }
+                View mainRoot = findViewById(R.id.main);
+                mainRoot.setVisibility(View.VISIBLE);
             });
         };
+
 
     public void uvGraph(LineChart lineChart, Map<LocalTime, Double> uvValues) {
         List<Entry> entries = new ArrayList<>();

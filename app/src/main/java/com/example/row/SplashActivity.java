@@ -52,8 +52,10 @@ public class SplashActivity extends AppCompatActivity {
             CombinedWeatherSmile weather = new CombinedWeatherSmile();  // Does network call inside
             LocalTime key = LocalTime.now().withMinute(0).withSecond(0).withNano(0);
             String flagColor;
+            String flagInfo;
             try {
                 flagColor = Flags.getFlagColour();
+                flagInfo= Flags.getFlagInfo();
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new RuntimeException(e);
@@ -83,7 +85,7 @@ public class SplashActivity extends AppCompatActivity {
             HashMap<LocalTime, String> finalWeatherState = weatherState;
             BundleData bundle=  new BundleData(finalFlagColor, windDirection, windSpeed,
                     finalWeatherState, uvValues,tempState, key, weather.getSunrise(), weather.getSunset(),
-                    weather.getChanceOfRain());
+                    weather.getChanceOfRain(), flagInfo);
 
             BundleSingleton.getInstance(bundle);
             new Handler(Looper.getMainLooper()).postDelayed(()-> {
