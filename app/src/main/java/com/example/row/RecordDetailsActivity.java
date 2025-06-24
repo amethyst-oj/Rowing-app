@@ -31,6 +31,7 @@ public class RecordDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_record_details);
+
         TextView timeDisplay = findViewById(R.id.timeVal);
         TextView distanceDisplay = findViewById(R.id.distanceVal);
         TextView speedDisplay = findViewById(R.id.speedVal);
@@ -45,9 +46,9 @@ public class RecordDetailsActivity extends AppCompatActivity {
             String time = extras.getString("timeTaken");
             String date = extras.getString("date");
             String distance = extras.getString("distance");
-            timeDisplay.setText(time+"s");
-            distanceDisplay.setText(distance+"m");
-            speedDisplay.setText(Float.parseFloat(distance)/Float.parseFloat(time)+"m/s");
+            timeDisplay.setText("Time:");
+            distanceDisplay.setText("Distance:"+distance+"m");
+            speedDisplay.setText("Speed:"+Float.parseFloat(distance)/Float.parseFloat(time)+"m/s");
         }
     }
     public void recordsTransition(View v) {

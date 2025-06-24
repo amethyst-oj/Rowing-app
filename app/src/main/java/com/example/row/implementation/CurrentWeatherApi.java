@@ -27,9 +27,7 @@ public class CurrentWeatherApi{
         return forecastdata;
     }
     public static WeatherResponse fetchCurrentWeather(String apiKey, String location) {
-        //apiKey = "c283fac38f0347adb3b154902252705";
-        //location = "Cambridge";
-        String urlString = "http://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + location;
+        String urlString = "https://api.weatherapi.com/v1/current.json?key=" + apiKey + "&q=" + location;
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();

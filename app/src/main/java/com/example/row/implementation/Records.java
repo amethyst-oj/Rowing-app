@@ -59,7 +59,7 @@ public class Records implements Parcelable {
     }
 
 
-    public void newRecord(LocalDateTime dateTime, int distance, int timeTaken) throws RecordOverlapException { // Adds a new record, ensuring not on the same date and time as any other
+    public void newRecord(LocalDateTime dateTime, int distance, String timeTaken) throws RecordOverlapException { // Adds a new record, ensuring not on the same date and time as any other
         SingleRecord record = new SingleRecord(dateTime, distance, timeTaken);
         int current = 0;
         if (count == 0) { records.add(record);} // No records yet

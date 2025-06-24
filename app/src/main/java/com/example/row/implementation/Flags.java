@@ -41,6 +41,7 @@ public class Flags {
                 Elements columns= dataRows.get(r).select("td");
                 flag_meaning.put(columns.get(1).text(),columns.get(2).text());
             }
+            flag_meaning.put("White", "No flag is currently being flown");
         }
 
     public static String getFlagInfo(){

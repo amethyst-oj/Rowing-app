@@ -23,29 +23,29 @@
         android:id="@+id/specific_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/time"
+        android:fontFamily="sans-serif-smallcaps"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:layout_gravity="start|top"
-        android:padding="8dp"/>
+        android:padding="2dp"/>
 
     <TextView
         android:id="@+id/specific_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Date"
+        android:layout_gravity="start|center"
+        android:fontFamily="sans-serif-smallcaps"
         android:textColor="@color/white"
-        android:textSize="16sp"
-        android:layout_gravity="center"/>
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/specific_dist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Distance"
+        android:fontFamily="sans-serif-smallcaps"
         android:textColor="@color/white"  
         android:textSize="16sp"
-        android:layout_gravity="end|bottom"
-        android:padding="8dp"/>
+        android:layout_gravity="start|bottom"
+        android:padding="2dp"/>
 
 </FrameLayout>

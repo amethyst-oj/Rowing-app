@@ -84,7 +84,7 @@ public class SplashActivity extends AppCompatActivity {
 
             HashMap<LocalTime, String> finalWeatherState = weatherState;
             BundleData bundle=  new BundleData(finalFlagColor, windDirection, windSpeed,
-                    finalWeatherState, uvValues,tempState, key, weather.getSunrise(), weather.getSunset(),
+                    finalWeatherState, uvValues,tempState, weather.getSunrise(), weather.getSunset(),
                     weather.getChanceOfRain(), flagInfo);
 
             BundleSingleton.getInstance(bundle);

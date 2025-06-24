@@ -39,7 +39,7 @@ public class RecordGraphActivity extends AppCompatActivity {
         if (records==null) {
             try {
                 records = new Records();
-                records.newRecord(LocalDateTime.now(), 1000, 50);
+                records.newRecord(LocalDateTime.now(), 1000, "12:45");
             } catch (Records.RecordOverlapException e) {
                 throw new RuntimeException(e);
             }
@@ -90,7 +90,7 @@ public class RecordGraphActivity extends AppCompatActivity {
         List<Entry> entries = new ArrayList<>();
         List<SingleRecord> recordList = records.getRecordsByDistance(curDist);
         for (SingleRecord rec: recordList) {  //converting recordList to entry list
-            entries.add(new Entry(rec.getDateTime().atZone(ZoneId.systemDefault()).toEpochSecond(), rec.getTimeTaken()));
+            entries.add(new Entry(rec.getDateTime().atZone(ZoneId.systemDefault()).toEpochSecond(), rec.getTimeInSeconds()));
         }
         LineDataSet data = new LineDataSet(entries, "Date");
         data.setColor(Color.BLUE);

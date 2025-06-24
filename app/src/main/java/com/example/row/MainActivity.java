@@ -1,7 +1,6 @@
 package com.example.row;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,27 +17,25 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.row.implementation.BundleData;
 import com.example.row.implementation.BundleSingleton;
-import com.example.row.implementation.CombinedWeatherSmile;
 import com.example.row.implementation.Flags;
 import com.bumptech.glide.Glide;
+import com.example.row.implementation.FutureWeatherResponse;
 import com.example.row.implementation.Records;
-import com.example.row.implementation.WindData;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.*;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainActivity extends AppCompatActivity {
     Records records;
+    String apiKey = "c283fac38f0347adb3b154902252705";
+    String location = "Cambridge";
     BundleData bundle;
+    int index = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         bundle = BundleSingleton.getInstance();
         EdgeToEdge.enable(this);
-        View mainRoot = findViewById(R.id.main);
         ImageButton prevDay = findViewById(R.id.previous_day);
+
         Handler handler = new Handler(Looper.getMainLooper());
         handler.postDelayed(() -> {
             bundle = BundleSingleton.getInstance();
@@ -58,6 +55,14 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                     throw new RuntimeException(e);
                 }
+                ImageButton nextDay = findViewById(R.id.next_day);
+                nextDay.setOnClickListener(v -> {
+                    try {
+                        toNextDay(v);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
                 ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
                     Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                     v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -76,27 +81,48 @@ public class MainActivity extends AppCompatActivity {
         startActivity(map_Intent);
     }
 
-    /*public void toNextDay(View v) throws IOException {
+    public void toNextDay(View v) throws IOException {
      ImageButton nextDay = findViewById(R.id.next_day);
         ImageButton prevDay = findViewById(R.id.previous_day);
         TextView day = findViewById(R.id.day);
         nextDay.setVisibility(View.GONE);
         prevDay.setVisibility(View.VISIBLE);
         day.setText("TOMORROW");
-        initializeData(LocalTime.now().plusDays(1));
-    }*/
+        this.index = index + 1;
+        AtomicReference<BundleData> futureBundle= new AtomicReference<>(bundle);
+        Executors .newSingleThreadExecutor().execute(() -> {
+                FutureWeatherResponse fwr = new FutureWeatherResponse(apiKey, location,index);
+                futureBundle.set(new BundleData("White", fwr.getWindDirection(), fwr.getWindSpeed(),
+                        fwr.getGeneralConditions(apiKey, location), fwr.getUVData(), fwr.getExternalTempData(),
+                        fwr.getSunrise(), fwr.getSunset(), fwr.getChanceOfRain(), Flags.getFlagInfo()));
+
+        });
+        new Handler(Looper.getMainLooper()).post(() -> {
+            try {
+                if (futureBundle.get() != null) {
+                    initializeData(futureBundle.get());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
     public void toPrevDay(View v) throws IOException {
+        if (index > 0) {
+            index = index - 1;
+        }
         ImageButton nextDay = findViewById(R.id.next_day);
         ImageButton prevDay = findViewById(R.id.previous_day);
         TextView day = findViewById(R.id.day);
         nextDay.setVisibility(View.VISIBLE);
         prevDay.setVisibility(View.GONE);
         day.setText("TODAY");
-        initializeData(LocalTime.now());
+        initializeData(bundle);
     }
 
-    public void initializeData(LocalTime currentTime) throws IOException {
-        int[] weathers = new int[5];
+    public void initializeData(BundleData bundle) throws IOException {
         // Set hourly weather icons
         ImageView weatherNow = findViewById(R.id.weather0);
         ImageView weather1hr = findViewById(R.id.weather1);

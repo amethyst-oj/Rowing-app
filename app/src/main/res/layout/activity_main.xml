@@ -335,7 +335,6 @@
         android:layout_width="107dp"
         android:layout_height="19dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:text="15°"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
@@ -345,6 +344,7 @@
 
     <ImageButton
         android:id="@+id/next_day"
+        android:onClick="toNextDay"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="36dp"

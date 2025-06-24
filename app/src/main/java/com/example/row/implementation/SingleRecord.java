@@ -8,33 +8,39 @@ import java.time.LocalDateTime;
 public class SingleRecord implements Parcelable {
     private LocalDateTime time;
     private int distance;
-    private int timeTaken;
+    private String timeTaken;
+    private int timeInSeconds;
     private double speed;
 
-    public SingleRecord(LocalDateTime time, int distance, int timeTaken) {
+    public SingleRecord(LocalDateTime time, int distance, String timeTaken) {
         this.time = time;
         this.distance = distance;
         this.timeTaken = timeTaken;
-        this.speed = (double) distance / ((double) timeTaken); // Speed = distance over time
+        String[] parts = timeTaken.split(":");
+        timeInSeconds = Integer.parseInt(parts[0]) * 60 + Integer.parseInt(parts[1]); // Convert to seconds
+        this.speed = (double) distance / ((double) timeInSeconds); // Speed = distance over time
     }
 
     public LocalDateTime getDateTime() { return time; }
     public int getDistance() { return distance; } // Commonly 500, 1000, 2000
-    public int getTimeTaken() { return timeTaken; } // in seconds
+    public String getTimeTaken() { return timeTaken; } // in seconds
+
+    public int getTimeInSeconds() { return timeInSeconds; } // in seconds
     public double getSpeed() { return speed; }
 
     protected SingleRecord(Parcel in) {
         time = LocalDateTime.parse(in.readString());
         distance = in.readInt();
-        timeTaken = in.readInt();
-        speed = (double) distance / timeTaken;
+        timeTaken = in.readString();
+        speed = (double) distance / timeInSeconds;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(time.toString());
         dest.writeInt(distance);
-        dest.writeInt(timeTaken);
+        dest.writeString(timeTaken);
+        dest.writeInt(timeInSeconds);
     }
 
     @Override

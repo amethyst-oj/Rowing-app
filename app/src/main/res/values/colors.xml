@@ -3,5 +3,6 @@
     <color name="black">#FF000000</color>
     <color name= "navy">#FF000033</color>
     <color name="slate">#FF9999EE</color>
+    <color name="dark_slate">#FF112288</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

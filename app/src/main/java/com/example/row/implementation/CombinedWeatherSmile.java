@@ -17,18 +17,18 @@ public class CombinedWeatherSmile implements Weather{
         this.CurrentApi = new CurrentWeatherApi(apiKey, Location);
         this.lat = lat;
         this.lon = lon;
-        this.FutureApi = new FutureWeatherResponse(apiKey, Location);
+        this.FutureApi = new FutureWeatherResponse(apiKey, Location,0);
         //WaterTemp = 18.0; Didn't know what to put here, was used for testing
     }
     public CombinedWeatherSmile() {  //TODO added for default, cambridge city centre coordinates, is this ok?
         double lat = 52.205051;
         double lon = 0.122162;
-        String apiKey = "c283fac38f0347adb3b154902252705";
+        String apiKey = "3ea3d6c93a594742b97121516252406";
         String location = "Cambridge";
         this.CurrentApi = new CurrentWeatherApi(apiKey, location);
         this.lat = lat;
         this.lon = lon;
-        this.FutureApi = new FutureWeatherResponse(apiKey, location);
+        this.FutureApi = new FutureWeatherResponse(apiKey, location,0);
     }
     @Override
     public HashMap<LocalTime, Double> getUVData() {
